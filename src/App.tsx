@@ -6,7 +6,7 @@ import { ThemeProvider } from 'styled-components';
 import { LoginPage } from 'pages';
 import { useDirectionTheme } from 'hooks';
 import { Resources } from 'types';
-import { CustomersList } from 'resources';
+import { CustomersList, CustomersShow } from 'resources';
 import GroupsIcon from '@mui/icons-material/Groups';
 
 const App = () => {
@@ -25,9 +25,9 @@ const App = () => {
       >
         <Resource
           name={Resources.CLIENTS}
-          show={ShowGuesser}
           icon={GroupsIcon}
           list={CustomersList}
+          show={CustomersShow}
           options={{ label: 'Заказчики' }}
         />
       </Admin>
