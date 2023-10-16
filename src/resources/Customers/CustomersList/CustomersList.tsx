@@ -32,7 +32,11 @@ const CustomersList = (props: ResourceComponentInjectedProps) => {
       <Datagrid bulkActionButtons={false} rowClick="show">
         <TextField source="id" sortable />
         <DateField source="createdAt" sortable label="Дата регистрации" />
-        <TextField source="customerProfile.nickName" label="Никнейм" />
+        <TextField
+          source="customerProfile.nickName"
+          label="Никнейм"
+          sortable={false}
+        />
         <EmailField source="email" sortable label="Эл. почта" />
         <TextField source="phoneNumber" sortable label="Телефон" />
       </Datagrid>
