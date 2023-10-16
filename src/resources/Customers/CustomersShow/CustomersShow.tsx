@@ -12,6 +12,7 @@ const CustomersShow = () => {
     <Show title="Заказчик">
       <SimpleShowLayout>
         <TextField source="id" />
+        <TextField source="customerProfile.nickName" label="Никнейм" />
         <EmailField source="email" label="Эл.почта" />
         <TextField source="phoneNumber" label="Номер телефона" />
         <DateField source="createdAt" label="Дата регистрации" />

@@ -15,6 +15,7 @@
     "commit": "cz"
   },
   "dependencies": {
+    "@mux/mux-player-react": "^2.0.1",
     "@nestjsx/crud-request": "^4.1.0",
     "jwt-decode": "^3.1.2",
     "lodash.omitby": "^4.6.0",
