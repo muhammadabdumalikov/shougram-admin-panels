@@ -7,6 +7,7 @@ import {
 import omitBy from 'lodash.omitby';
 import { DataProvider, fetchUtils } from 'ra-core';
 import { stringify } from 'query-string';
+import { Resources } from 'types';
 
 const countDiff = (
   o1: Record<string, any>,
@@ -93,6 +94,9 @@ export default (
   httpClient = fetchUtils.fetchJson,
 ): DataProvider => ({
   getList: (resource, params) => {
+    if (resource === 'artists' || resource === 'customers') {
+      resource = Resources.CLIENTS;
+    }
     const { page, perPage } = params.pagination;
     const { q: queryParams, $OR: orFilter, ...filter } = params.filter || {};
 
@@ -118,12 +122,21 @@ export default (
     }));
   },
 
-  getOne: (resource, params) =>
-    httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
-      data: json,
-    })),
+  getOne: (resource, params) => {
+    if (resource === 'artists' || resource === 'customers') {
+      resource = Resources.CLIENTS;
+    }
+    return httpClient(`${apiUrl}/${resource}/${params.id}`).then(
+      ({ json }) => ({
+        data: json,
+      }),
+    );
+  },
 
   getMany: (resource, params) => {
+    if (resource === 'artists' || resource === 'customers') {
+      resource = Resources.CLIENTS;
+    }
     const query = RequestQueryBuilder.create()
       .setFilter({
         field: 'id',
@@ -138,6 +151,9 @@ export default (
   },
 
   getManyReference: (resource, params) => {
+    if (resource === 'artists' || resource === 'customers') {
+      resource = Resources.CLIENTS;
+    }
     const { page, perPage } = params.pagination;
     const { q: queryParams, ...otherFilters } = params.filter || {};
     const filter: QueryFilter[] = composeFilter(otherFilters);
@@ -168,6 +184,9 @@ export default (
   },
 
   update: (resource, params) => {
+    if (resource === 'artists' || resource === 'customers') {
+      resource = Resources.CLIENTS;
+    }
     // no need to send all fields, only updated fields are enough
     const data = countDiff(params.data, params.previousData);
     return httpClient(`${apiUrl}/${resource}/${params.id}`, {
@@ -188,18 +207,25 @@ export default (
       data: responses.map(({ json }) => json),
     })),
 
-  create: (resource, params) =>
-    httpClient(`${apiUrl}/${resource}`, {
+  create: (resource, params) => {
+    if (resource === 'artists' || resource === 'customers') {
+      resource = Resources.CLIENTS;
+    }
+    return httpClient(`${apiUrl}/${resource}`, {
       method: 'POST',
       body: JSON.stringify(params.data),
     }).then(({ json }) => ({
       data: { ...params.data, id: json.id },
-    })),
+    }));
+  },
 
-  delete: (resource, params) =>
-    httpClient(`${apiUrl}/${resource}/${params.id}`, {
+  delete: (resource, params) => {
+    if (resource === 'artists' || resource === 'customers') {
+      resource = Resources.CLIENTS;
+    }
+    return httpClient(`${apiUrl}/${resource}/${params.id}`, {
       method: 'DELETE',
-    }).then(({ json }) => ({ data: { ...json, id: params.id } })),
+    }).then(({ json }) => ({ data: { ...json, id: params.id } }))},
 
   deleteMany: (resource, params) =>
     Promise.all(

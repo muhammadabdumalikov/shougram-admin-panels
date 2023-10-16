@@ -1,5 +1,4 @@
 import {
-  BooleanField,
   Datagrid,
   DateField,
   EmailField,
@@ -10,6 +9,13 @@ import {
 } from 'react-admin';
 
 const customersFilters = [
+  <TextInput key="id" label="id" source="id!$eq" alwaysOn />,
+  <TextInput
+    key="customerProfile.nickName"
+    label="Никнейм"
+    source="cp.nickName!$contL"
+    alwaysOn
+  />,
   <TextInput key="1" label="Почта" source="email!$contL" alwaysOn />,
   <TextInput
     key="1"
@@ -26,6 +32,11 @@ const CustomersList = (props: ResourceComponentInjectedProps) => {
       <Datagrid bulkActionButtons={false} rowClick="show">
         <TextField source="id" sortable />
         <DateField source="createdAt" sortable label="Дата регистрации" />
+        <TextField
+          source="customerProfile.nickName"
+          label="Никнейм"
+          sortable={false}
+        />
         <EmailField source="email" sortable label="Эл. почта" />
         <TextField source="phoneNumber" sortable label="Телефон" />
       </Datagrid>
