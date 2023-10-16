@@ -15,9 +15,9 @@ import { JWTToken } from 'types';
 const authProvider = (type: AuthActionType, params: any): Promise<any> => {
   console.log(type);
   if (type === AUTH_LOGIN) {
-    const { username: email, password } = params;
+    const { username, password } = params;
     return http
-      .post('/v1/admins/sign-in', { email, password })
+      .post('/v1/admins/sign-in', { username, password })
       .then(({ data }) => {
         if (data.token) {
           http.setAuthorizationHeader(data.token);
