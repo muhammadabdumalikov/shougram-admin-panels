@@ -65,6 +65,7 @@ export const UpdateArtistStatusButton: FC<UpdateArtistStatusButtonProps> = ({
   return (
     <>
       <StyledButton
+        sx={{ height: 30 }}
         onClick={handleClick}
         label={isBlock ? 'Одобрить' : 'Заблокировать'}
         startIcon={isBlock ? <PersonIcon /> : <PersonOffIcon />}

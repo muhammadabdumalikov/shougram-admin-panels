@@ -10,9 +10,12 @@ import {
   ArtistsShow,
   CustomersList,
   CustomersShow,
+  OrdersList,
 } from 'resources';
 import GroupsIcon from '@mui/icons-material/Groups';
 import FaceRetouchingNaturalIcon from '@mui/icons-material/FaceRetouchingNatural';
+import VideoFileIcon from '@mui/icons-material/VideoFile';
+import { Resources } from 'types';
 
 const App = () => {
   const { currentTheme } = useDirectionTheme();
@@ -41,6 +44,13 @@ const App = () => {
           list={CustomersList}
           show={CustomersShow}
           options={{ label: 'Заказчики' }}
+        />
+        <Resource
+          name={Resources.ORDERS}
+          icon={VideoFileIcon}
+          list={OrdersList}
+          // show={CustomersShow}
+          options={{ label: 'Заявки' }}
         />
       </Admin>
     </ThemeProvider>

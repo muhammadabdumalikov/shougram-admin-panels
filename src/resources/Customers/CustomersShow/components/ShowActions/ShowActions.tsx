@@ -1,10 +1,6 @@
 import React from 'react';
 import { TopToolbar, useRecordContext } from 'react-admin';
-import { UpdateArtistStatusButton } from '../../../components';
-import {
-  AdminUpdateArtistProfileDtoStatusEnum,
-  ClientTypeOrmEntity,
-} from 'api/generated';
+import { ClientTypeOrmEntity } from 'api/generated';
 import { Link } from 'react-router-dom';
 import { Resources } from 'types';
 import { Button } from '@mui/material';
@@ -25,7 +21,7 @@ const ShowActions = () => {
           pathname: '/' + Resources.ORDERS,
           search: stringify({
             filter: JSON.stringify({
-              artistClientId: record.id,
+              customerClientId: record.id,
             }),
           }),
         }}
@@ -33,14 +29,6 @@ const ShowActions = () => {
       >
         Заявки
       </Button>
-      {record.artistProfile?.status !==
-        AdminUpdateArtistProfileDtoStatusEnum.Active && (
-        <UpdateArtistStatusButton isBlock />
-      )}
-      {record.artistProfile?.status !==
-        AdminUpdateArtistProfileDtoStatusEnum.Blocked && (
-        <UpdateArtistStatusButton isBlock={false} />
-      )}
     </TopToolbar>
   );
 };

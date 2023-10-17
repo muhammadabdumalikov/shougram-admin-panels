@@ -9,12 +9,13 @@ import {
   EmailField,
   FunctionField,
   List,
-  ResourceComponentInjectedProps,
   SelectInput,
   TextField,
   TextInput,
+  ListProps,
 } from 'react-admin';
 import { formatArtistProfileStatusName } from '../helpers';
+import { FC } from 'react';
 
 const customersFilters = [
   <SelectInput
@@ -59,7 +60,7 @@ const customersFilters = [
   />,
 ];
 
-const ArtistsList = (props: ResourceComponentInjectedProps) => {
+const ArtistsList: FC<ListProps> = (props) => {
   return (
     <List
       filters={customersFilters}
@@ -75,8 +76,14 @@ const ArtistsList = (props: ResourceComponentInjectedProps) => {
           source="artistProfile.name"
           sortable={false}
           label="Имя/Псевдоним"
+          style={{ wordBreak: 'break-word' }}
         />
-        <EmailField source="email" sortable label="Эл. почта" />
+        <EmailField
+          source="email"
+          sortable
+          label="Эл. почта"
+          style={{ wordBreak: 'break-word' }}
+        />
         <TextField source="phoneNumber" sortable label="Телефон" />
         <FunctionField
           label="Статус"
