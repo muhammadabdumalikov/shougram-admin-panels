@@ -6,11 +6,10 @@ import {
   SimpleShowLayout,
   TextField,
 } from 'react-admin';
-import { ShowActions } from './components';
 
 const CustomersShow = () => {
   return (
-    <Show title="Заказчик" actions={<ShowActions />}>
+    <Show title="Заказчик">
       <SimpleShowLayout>
         <TextField source="id" />
         <TextField source="customerProfile.nickName" label="Никнейм" />
