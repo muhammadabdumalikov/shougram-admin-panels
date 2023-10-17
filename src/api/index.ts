@@ -1,11 +1,11 @@
 import { AppConfig } from 'config';
 import { http } from 'services';
-import {} from './generated/api';
+import { V1AdminPanelArtistProfileApi } from './generated/api';
 
 export default {
-  // AdminPanelDirections: new AdminApi(
-  //   undefined,
-  //   AppConfig.BASE_API_URL,
-  //   http.axios,
-  // ),
+  AdminArtistProfile: new V1AdminPanelArtistProfileApi(
+    undefined,
+    AppConfig.BASE_API_URL,
+    http.axios,
+  ),
 };

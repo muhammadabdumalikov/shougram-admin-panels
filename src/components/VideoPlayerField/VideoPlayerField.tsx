@@ -1,6 +1,4 @@
-import { OrderTypeOrmEntityArtistClient } from 'api/generated';
 import React, { FC, HtmlHTMLAttributes } from 'react';
-import { useRecordContext } from 'react-admin';
 import { styled } from '@mui/material/styles';
 import MuxPlayer from '@mux/mux-player-react';
 
@@ -14,21 +12,13 @@ const VideoPlayerField: FC<VideoPlayerFieldProps> = ({
 }) => {
   return (
     <Root {...props}>
-      <MuxPlayer
-        playbackId={playbackId}
-        // metadata={{
-        //   video_id: 'video-id-123456',
-        //   video_title: 'Bick Buck Bunny',
-        //   viewer_user_id: 'user-id-bc-789',
-        // }}
-        streamType="on-demand"
-      />
+      <MuxPlayer playbackId={playbackId} streamType="on-demand" />
     </Root>
   );
 };
 
 const Root = styled('div')(() => ({
-  width: 500,
+  width: 250,
 }));
 
 export default VideoPlayerField;

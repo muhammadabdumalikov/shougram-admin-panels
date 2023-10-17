@@ -37,7 +37,12 @@ const customersFilters = [
     ]}
     alwaysOn
   />,
-  <TextInput key="id" label="id" source="id!$eq" alwaysOn />,
+  <TextInput
+    key="id"
+    label="Id (введите полностью)"
+    source="id!$eq"
+    alwaysOn
+  />,
   <TextInput
     key="ap.name"
     label="Имя/Псевдоним"
