@@ -25,7 +25,7 @@ const ShowActions = () => {
           pathname: '/' + Resources.ORDERS,
           search: stringify({
             filter: JSON.stringify({
-              artistClientId: record.id,
+              artistClientId: record?.id,
             }),
           }),
         }}
@@ -33,11 +33,11 @@ const ShowActions = () => {
       >
         Заявки
       </Button>
-      {record.artistProfile?.status !==
+      {record?.artistProfile?.status !==
         AdminUpdateArtistProfileDtoStatusEnum.Active && (
         <UpdateArtistStatusButton isBlock />
       )}
-      {record.artistProfile?.status !==
+      {record?.artistProfile?.status !==
         AdminUpdateArtistProfileDtoStatusEnum.Blocked && (
         <UpdateArtistStatusButton isBlock={false} />
       )}

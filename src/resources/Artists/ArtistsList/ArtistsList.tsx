@@ -78,12 +78,7 @@ const ArtistsList: FC<ListProps> = (props) => {
           label="Имя/Псевдоним"
           style={{ wordBreak: 'break-word' }}
         />
-        <EmailField
-          source="email"
-          sortable
-          label="Эл. почта"
-          style={{ wordBreak: 'break-word' }}
-        />
+        <EmailField source="email" sortable label="Эл. почта" />
         <TextField source="phoneNumber" sortable label="Телефон" />
         <FunctionField
           label="Статус"

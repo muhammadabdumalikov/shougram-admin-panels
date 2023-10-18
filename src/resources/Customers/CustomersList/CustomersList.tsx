@@ -43,12 +43,7 @@ const CustomersList = (props: ResourceComponentInjectedProps) => {
           sortable={false}
           style={{ wordBreak: 'break-word' }}
         />
-        <EmailField
-          source="email"
-          sortable
-          label="Эл. почта"
-          style={{ wordBreak: 'break-word' }}
-        />
+        <EmailField source="email" sortable label="Эл. почта" />
         <TextField source="phoneNumber" sortable label="Телефон" />
       </Datagrid>
     </List>
