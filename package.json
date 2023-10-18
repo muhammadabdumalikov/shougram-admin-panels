@@ -9,7 +9,7 @@
     "type-check": "tsc",
     "format": "prettier --write \"./**/*.{js,jsx,ts,tsx,md,json}\" --config ./.prettierrc",
     "openapi:download": "curl \"https://staging.api.shougram.uz/doc-json\" -o ./src/api/openapi.json",
-    "openapi:generate": "openapi-generator-cli generate -i ./src/api/openapi.json -g typescript-axios --skip-validate-spec --enable-post-process-file -o ./src/api/generated",
+    "openapi:generate": "openapi-generator-cli generate -i ./src/api/openapi.json -g typescript-axios --type-mappings=Byte=string --type-mappings=Uri=string --skip-validate-spec --enable-post-process-file -o ./src/api/generated",
     "postinstall": "husky install",
     "openapi": "yarn openapi:download && yarn openapi:generate",
     "commit": "cz"

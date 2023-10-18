@@ -11,6 +11,7 @@ import {
   CustomersList,
   CustomersShow,
   OrdersList,
+  OrdersShow,
 } from 'resources';
 import GroupsIcon from '@mui/icons-material/Groups';
 import FaceRetouchingNaturalIcon from '@mui/icons-material/FaceRetouchingNatural';
@@ -49,7 +50,7 @@ const App = () => {
           name={Resources.ORDERS}
           icon={VideoFileIcon}
           list={OrdersList}
-          // show={CustomersShow}
+          show={OrdersShow}
           options={{ label: 'Заявки' }}
         />
       </Admin>
