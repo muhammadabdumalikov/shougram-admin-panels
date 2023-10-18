@@ -14,6 +14,8 @@ import {
 } from 'react-admin';
 import { formatOrderStatusName } from '../helpers';
 import { OrderPaymentStatusButton } from '../components';
+import { DateService } from 'services';
+import moment from 'moment';
 
 const ordersFilters = [
   <TextInput
@@ -66,12 +68,14 @@ const ordersFilters = [
     key="createdAtStart"
     label="Создана с"
     source="createdAt!$gte"
+    parse={(value) => moment(value).startOf('day').toISOString()}
     alwaysOn
   />,
   <DateInput
     key="createdAtEnd"
-    label="Создана до"
+    label="Создана по"
     source="createdAt!$lte"
+    parse={(value) => moment(value).endOf('day').toISOString()}
     alwaysOn
   />,
 ];
