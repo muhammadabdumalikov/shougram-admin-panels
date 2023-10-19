@@ -206,7 +206,7 @@ export default (
     ).then((responses) => ({
       data: responses.map(({ json }) => json),
     })),
-
+  //@ts-ignore
   create: (resource, params) => {
     if (resource === 'artists' || resource === 'customers') {
       resource = Resources.CLIENTS;

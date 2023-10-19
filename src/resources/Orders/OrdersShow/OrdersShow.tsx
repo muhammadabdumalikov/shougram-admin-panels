@@ -100,7 +100,11 @@ const OrdersShow = () => {
           />
         </Tab>
         <Tab label="История выполнения">
-          <ArrayField source="orderExecutions" label="">
+          <ArrayField
+            source="orderExecutions"
+            label=""
+            sort={{ field: 'createdAt', order: 'DESC' }}
+          >
             <Datagrid bulkActionButtons={false}>
               <FunctionField
                 label="Видео"
