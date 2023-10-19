@@ -1,6 +1,7 @@
 import {
   ArtistOrderResponseDto,
   OrderExecutionBaseResponseDto,
+  OrderPaymentBaseResponseDto,
   OrderTypeOrmEntity,
 } from 'api/generated';
 import React from 'react';
@@ -20,6 +21,7 @@ import {
   formatOccasionName,
   formatOrderExecutionsStatusName,
   formatOrderStatusName,
+  formatPaymentStatusName,
 } from '../helpers';
 import { VideoPlayerField } from 'components';
 import { OrderPaymentStatusButton } from '../components';
@@ -126,6 +128,37 @@ const OrdersShow = () => {
               <TextField
                 source="customerRejectComment"
                 label="Комментарий заказчика"
+              />
+            </Datagrid>
+          </ArrayField>
+        </Tab>
+        <Tab label="История платежей">
+          <ArrayField source="orderPayments" label="">
+            <Datagrid bulkActionButtons={false}>
+              <DateField source="createdAt" label="Дата создания" showTime />
+              <FunctionField
+                label="Статус платежа"
+                render={(record: OrderPaymentBaseResponseDto) =>
+                  formatPaymentStatusName(record.status)
+                }
+              />
+              <FunctionField
+                label="Размер платежа"
+                render={(record: OrderPaymentBaseResponseDto) =>
+                  record.amount &&
+                  record?.amount.toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: record.currency,
+                  })
+                }
+              />
+              <TextField source="transactionId" label="Id транзакции" />
+              <FunctionField
+                label="Ошибка"
+                render={(record: OrderPaymentBaseResponseDto) =>
+                  record.errorMessage &&
+                  Object.values(record.errorMessage).join(',')
+                }
               />
             </Datagrid>
           </ArrayField>
