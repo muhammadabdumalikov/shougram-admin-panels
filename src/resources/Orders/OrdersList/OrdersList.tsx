@@ -12,16 +12,15 @@ import {
   FunctionField,
   DateInput,
 } from 'react-admin';
-import { formatOrderStatusName } from '../helpers';
+import { formatOrderStatusName, getOrderPriceLabel } from '../helpers';
 import { OrderPaymentStatusButton } from '../components';
-import { DateService } from 'services';
 import moment from 'moment';
 
 const ordersFilters = [
   <TextInput
-    key="id"
-    label="Id (введите полностью)"
-    source="id!$eq"
+    key="number"
+    label="Номер заказа (введите полностью)"
+    source="number!$eq"
     alwaysOn
   />,
   <TextInput
@@ -89,7 +88,7 @@ const OrdersList: FC<ListProps> = (props) => {
       {...props}
     >
       <Datagrid bulkActionButtons={false} rowClick="show">
-        <TextField source="id" />
+        <TextField source="number" label="Номер заказа" />
         <ReferenceField
           source="artistClientId"
           reference="artists"
@@ -114,6 +113,10 @@ const OrdersList: FC<ListProps> = (props) => {
           }
         />
         <DateField source="createdAt" label="Дата создания" />
+        <FunctionField
+          label="Стоимость"
+          render={(record: OrderTypeOrmEntity) => getOrderPriceLabel(record)}
+        />
         <FunctionField
           label="Средства выплачены артисту"
           render={(record: OrderTypeOrmEntity) =>

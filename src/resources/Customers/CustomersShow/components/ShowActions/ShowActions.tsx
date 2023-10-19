@@ -21,7 +21,7 @@ const ShowActions = () => {
           pathname: '/' + Resources.ORDERS,
           search: stringify({
             filter: JSON.stringify({
-              customerClientId: record?.id,
+              'customerClientId!$eq': record?.id,
             }),
           }),
         }}
