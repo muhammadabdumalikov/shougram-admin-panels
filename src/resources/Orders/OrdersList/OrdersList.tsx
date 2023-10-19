@@ -84,7 +84,7 @@ const OrdersList: FC<ListProps> = (props) => {
   return (
     <List
       filters={ordersFilters}
-      filterDefaultValues={{ status: ORDERSTATUS.UnderConsideration }}
+      filterDefaultValues={{ 'status!$eq': ORDERSTATUS.UnderConsideration }}
       sort={{ field: 'createdAt', order: 'DESC' }}
       {...props}
     >
