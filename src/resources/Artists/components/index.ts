@@ -1,0 +1,1 @@
+export { UpdateArtistStatusButton } from './UpdateArtistStatusButton';
