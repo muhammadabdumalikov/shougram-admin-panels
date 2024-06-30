@@ -69,6 +69,7 @@ const ArtistsList: FC<ListProps> = (props) => {
       }}
       {...props}
     >
+      Hello world!
       <Datagrid bulkActionButtons={false} rowClick="show">
         <TextField source="id" sortable />
         <DateField source="createdAt" sortable label="Дата регистрации" />
