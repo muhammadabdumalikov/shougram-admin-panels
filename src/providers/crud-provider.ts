@@ -113,19 +113,34 @@ export default (
       encodeFilter(filter),
       encodeSort(params.sort),
     );
+    const url = resource === "promocode" ? `${apiUrl}/${Resources.PROMOCODELIST}` : resource === "service" ? `${apiUrl}/${Resources.SERVICESLIST}` : `${apiUrl}/${resource}?${query}`;
+    const returnData =
+      (resource === "promocode" || resource === "service")
+        ?
+        // @ts-ignore
+        httpClient(url, { method: "POST", body: JSON.stringify({ page, perPage }) }).then(({ json }) => ({
+          data: json.items?.map((item: any) => { return { ...item, id: resource === "service" ? item?.id : item?.code } }),
+          total: json.meta.total
+        }
+        ))
+        :
+        httpClient(url).then(({ json }) => ({
+          data: json.data,
+          total: json.total,
+        }));
 
-    const url = `${apiUrl}/${resource}?${query}`;
+    return returnData
 
-    return httpClient(url).then(({ json }) => ({
-      data: json.data,
-      total: json.total,
-    }));
   },
 
   getOne: (resource, params) => {
     if (resource === 'artists' || resource === 'customers') {
       resource = Resources.CLIENTS;
     }
+    // if (resource === 'artists') {
+    //   resource = Resources.ARTISTSCREATE;
+    // }
+    // console.log("crud", params)
     return httpClient(`${apiUrl}/${resource}/${params.id}`).then(
       ({ json }) => ({
         data: json,
@@ -184,15 +199,21 @@ export default (
   },
 
   update: (resource, params) => {
-    if (resource === 'artists' || resource === 'customers') {
-      resource = Resources.CLIENTS;
+    // if (resource === 'artists' || resource === 'customers') {
+    //   resource = Resources.CLIENTS;
+    // }
+    if (resource === 'artists') {
+      resource = Resources.ARTISTSUPDATE;
     }
     // no need to send all fields, only updated fields are enough
     const data = countDiff(params.data, params.previousData);
-    return httpClient(`${apiUrl}/${resource}/${params.id}`, {
-      method: 'PATCH',
+    console.log(data)
+    return httpClient(`${apiUrl}/${resource}`, {
+      method: 'POST',
       body: JSON.stringify(data),
-    }).then(({ json }) => ({ data: json }));
+    }).then(({ json }) => (
+      { data: json?.client }
+    ));
   },
 
   updateMany: (resource, params) =>
@@ -208,24 +229,54 @@ export default (
     })),
   //@ts-ignore
   create: (resource, params) => {
-    if (resource === 'artists' || resource === 'customers') {
-      resource = Resources.CLIENTS;
+    // if (resource === 'artists' || resource === 'customers') {
+    //   resource = Resources.CLIENTS;
+    // }
+    if (resource === 'artists') {
+      resource = Resources.ARTISTSCREATE;
+    } if (resource === 'uploadImage') {
+      resource = `${Resources.UPLOADIMAGE}/${params?.data?.clientId}`;
+    } if (resource === 'promocode') {
+      resource = Resources.PROMOCODECREATE
+    } if (resource === "service") {
+      resource = Resources.SERVICESCREATE
     }
+
     return httpClient(`${apiUrl}/${resource}`, {
       method: 'POST',
       body: JSON.stringify(params.data),
     }).then(({ json }) => ({
-      data: { ...params.data, id: json.id },
+      data: { ...json, ...params.data, id: json.clientId, },
     }));
   },
 
   delete: (resource, params) => {
-    if (resource === 'artists' || resource === 'customers') {
-      resource = Resources.CLIENTS;
+    // if (resource === 'artists' || resource === 'customers') {
+    //   resource = Resources.CLIENTS;
+    // }
+    let body;
+
+    if (resource === 'artists') {
+      resource = Resources.ARTISTSDELETE;
+      body = { artistProfileId: params?.previousData?.artistProfile?.id, artistClientId: params?.previousData?.artistProfile?.clientId }
     }
-    return httpClient(`${apiUrl}/${resource}/${params.id}`, {
-      method: 'DELETE',
-    }).then(({ json }) => ({ data: { ...json, id: params.id } }))},
+    // else if (resource === 'promocode') {
+    //   resource = Resources.PROMOCODEDELETE
+    //   body = { id: params?.id }
+    // }
+    const returnData = (resource === "promocode" || resource === "service")
+      ?
+      httpClient(`${apiUrl}/${resource === "service" ? Resources.PROMOCODEDELETE : Resources.PROMOCODEDELETE}/${params?.id}`, {
+        method: 'DELETE'
+      }).then(({ json }) => ({ data: { ...json, id: params.id } }))
+      :
+      httpClient(`${apiUrl}/${resource}`, {
+        method: 'POST',
+        body: JSON.stringify(body)
+      }).then(({ json }) => ({ data: { ...json, id: params.id } }))
+
+    return returnData;
+  },
 
   deleteMany: (resource, params) =>
     Promise.all(

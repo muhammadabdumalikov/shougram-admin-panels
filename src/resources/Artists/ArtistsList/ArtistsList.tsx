@@ -13,6 +13,8 @@ import {
   TextField,
   TextInput,
   ListProps,
+  EditButton,
+  DeleteWithConfirmButton
 } from 'react-admin';
 import { formatArtistProfileStatusName } from '../helpers';
 import { FC } from 'react';
@@ -69,7 +71,6 @@ const ArtistsList: FC<ListProps> = (props) => {
       }}
       {...props}
     >
-      Hello world!
       <Datagrid bulkActionButtons={false} rowClick="show">
         <TextField source="id" sortable />
         <DateField source="createdAt" sortable label="Дата регистрации" />
@@ -86,6 +87,13 @@ const ArtistsList: FC<ListProps> = (props) => {
           render={(record: OrderTypeOrmEntityArtistClient) =>
             formatArtistProfileStatusName(record.artistProfile?.status)
           }
+        />
+        {/* <TextField source="id"/> */}
+        <EditButton />
+        <DeleteWithConfirmButton
+          confirmContent="You will not be able to recover this record. Are you sure?"
+          confirmColor="warning"
+        // translateOptions={{ name: record?.name }}
         />
       </Datagrid>
     </List>

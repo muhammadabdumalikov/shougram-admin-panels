@@ -63,12 +63,12 @@ const ArtistsShow = () => {
             render={(record: OrderTypeOrmEntityArtistClient) => {
               return record?.artistProfile?.service?.amount
                 ? ` ${record.artistProfile.service.amount.toLocaleString(
-                    'ja-JP',
-                    {
-                      style: 'currency',
-                      currency: record.artistProfile.service.currency,
-                    },
-                  )} `
+                  'ja-JP',
+                  {
+                    style: 'currency',
+                    currency: record.artistProfile.service.currency,
+                  },
+                )} `
                 : null;
             }}
           />

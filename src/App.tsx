@@ -7,16 +7,23 @@ import { LoginPage } from 'pages';
 import { useDirectionTheme } from 'hooks';
 import {
   ArtistsList,
+  ArtistsCreate,
+  ArtistsEdit,
   ArtistsShow,
   CustomersList,
   CustomersShow,
   OrdersList,
   OrdersShow,
+  ServicesList,
+  ServicesCreate
 } from 'resources';
 import GroupsIcon from '@mui/icons-material/Groups';
 import FaceRetouchingNaturalIcon from '@mui/icons-material/FaceRetouchingNatural';
 import VideoFileIcon from '@mui/icons-material/VideoFile';
+import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
+import QrCodeIcon from '@mui/icons-material/QrCode';
 import { Resources } from 'types';
+import { PromocodeCreate, PromocodeList } from 'resources/Promocode';
 
 const App = () => {
   const { currentTheme } = useDirectionTheme();
@@ -38,6 +45,8 @@ const App = () => {
           show={ArtistsShow}
           list={ArtistsList}
           options={{ label: 'Артисты' }}
+          create={ArtistsCreate}
+          edit={ArtistsEdit}
         />
         <Resource
           name="customers"
@@ -52,6 +61,22 @@ const App = () => {
           list={OrdersList}
           show={OrdersShow}
           options={{ label: 'Заявки' }}
+        />
+        <Resource
+          name={"service"}
+          icon={MiscellaneousServicesIcon}
+          list={ServicesList}
+          // show={OrdersShow}
+          options={{ label: 'Services' }}
+          create={ServicesCreate}
+        />
+        <Resource
+          name={"promocode"}
+          icon={QrCodeIcon}
+          list={PromocodeList}
+          // show={OrdersShow}
+          options={{ label: 'Promocode' }}
+          create={PromocodeCreate}
         />
       </Admin>
     </ThemeProvider>
