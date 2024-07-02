@@ -55,7 +55,6 @@ const ServicesCreate: FC<ListProps> = (props) => {
                         <Grid item xs={6}>
                             <TextInput source="email"
                                 type="email"
-                                validate={required()}
                                 style={{ width: "100%" }}
                             />
                         </Grid>

@@ -22,7 +22,7 @@ const ServicesList: FC<ListProps> = (props) => {
       {...props}
     >
       <Datagrid bulkActionButtons={false} rowClick="show">
-        <TextField source="id" label="ID" />
+        <TextField source="name" label="Name" />
         <TextField source="login" label="Login" />
         <TextField source="email" label="Email" />
         <TextField source="url" label="Url" />

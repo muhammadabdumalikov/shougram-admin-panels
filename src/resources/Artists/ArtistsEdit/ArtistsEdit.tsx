@@ -54,7 +54,7 @@ const ArtistsCreate: FC<ListProps> = (props) => {
         phoneNumber: record?.phoneNumber,
         description: record?.artistProfile?.description,
         isHiddenEmail: record?.artistProfile?.isHiddenEmail,
-        activi: record?.artistProfile?.isHiddenEmail,
+        // activi: record?.artistProfile?.isHiddenEmail,
         instagram: record?.artistProfile?.socialNetworksLinks?.instagram,
         facebook: record?.artistProfile?.socialNetworksLinks?.facebook,
         tiktok: record?.artistProfile?.socialNetworksLinks?.tiktok,
@@ -160,7 +160,6 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                             <TextInput
                                 source="instagram"
                                 label="Instagram"
-                                validate={required()}
                                 style={{ width: "100%" }}
                             />
                         </Grid>
@@ -168,7 +167,6 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                             <TextInput
                                 source="facebook"
                                 label="Facebook"
-                                validate={required()}
                                 style={{ width: "100%" }}
                             />
                         </Grid>
@@ -176,7 +174,6 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                             <TextInput
                                 source="telegram"
                                 label="Telegram"
-                                validate={required()}
                                 style={{ width: "100%" }}
                             />
                         </Grid>
@@ -184,7 +181,6 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                             <TextInput
                                 source="tiktok"
                                 label="Tiktok"
-                                validate={required()}
                                 style={{ width: "100%" }}
                             />
                         </Grid>
@@ -192,7 +188,6 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                             <TextInput
                                 source="youtube"
                                 label="Youtube"
-                                validate={required()}
                                 style={{ width: "100%" }}
                             />
                         </Grid>
