@@ -2798,6 +2798,12 @@ export interface CreateSecretDto {
      * @type {string}
      * @memberof CreateSecretDto
      */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateSecretDto
+     */
     'login': string;
     /**
      * 
@@ -5333,6 +5339,12 @@ export interface OrderExecutionTypeOrmEntityOrder {
     'waitForAction'?: object;
     /**
      * 
+     * @type {number}
+     * @memberof OrderExecutionTypeOrmEntityOrder
+     */
+    'type': number;
+    /**
+     * 
      * @type {boolean}
      * @memberof OrderExecutionTypeOrmEntityOrder
      */
@@ -5768,6 +5780,12 @@ export interface OrderTypeOrmEntity {
      * @memberof OrderTypeOrmEntity
      */
     'waitForAction'?: object;
+    /**
+     * 
+     * @type {number}
+     * @memberof OrderTypeOrmEntity
+     */
+    'type': number;
     /**
      * 
      * @type {boolean}
