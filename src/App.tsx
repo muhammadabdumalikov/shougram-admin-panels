@@ -14,14 +14,17 @@ import {
   CustomersShow,
   OrdersList,
   OrdersShow,
-  ServicesList,
-  ServicesCreate
+  SecretsList,
+  SecretsCreate,
+  ServiceList,
+  ServiceCreate
 } from 'resources';
 import GroupsIcon from '@mui/icons-material/Groups';
 import FaceRetouchingNaturalIcon from '@mui/icons-material/FaceRetouchingNatural';
 import VideoFileIcon from '@mui/icons-material/VideoFile';
 import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
 import QrCodeIcon from '@mui/icons-material/QrCode';
+import KeyIcon from '@mui/icons-material/Key';
 import { Resources } from 'types';
 import { PromocodeCreate, PromocodeList } from 'resources/Promocode';
 
@@ -63,12 +66,12 @@ const App = () => {
           options={{ label: 'Заявки' }}
         />
         <Resource
-          name={"service"}
-          icon={MiscellaneousServicesIcon}
-          list={ServicesList}
+          name={"secrets"}
+          icon={KeyIcon}
+          list={SecretsList}
           // show={OrdersShow}
-          options={{ label: 'Services' }}
-          create={ServicesCreate}
+          options={{ label: 'Secrets' }}
+          create={SecretsCreate}
         />
         <Resource
           name={"promocode"}
@@ -78,6 +81,14 @@ const App = () => {
           options={{ label: 'Promocode' }}
           create={PromocodeCreate}
         />
+        {/* <Resource
+          name={"service"}
+          icon={MiscellaneousServicesIcon}
+          list={ServiceList}
+          // show={OrdersShow}
+          options={{ label: 'Service' }}
+          create={ServiceCreate}
+        /> */}
       </Admin>
     </ThemeProvider>
   );

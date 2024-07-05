@@ -14,7 +14,7 @@ import { FieldValues } from 'react-hook-form';
 import { crudProvider } from "providers"
 import { Typography } from '@mui/material';
 
-const ServicesCreate: FC<ListProps> = (props) => {
+const SecretsCreate: FC<ListProps> = (props) => {
     // const transform = (data: FieldValues) => ({
     //     count: +data?.count,
     //     phoneNumber: data?.phoneNumber,
@@ -73,4 +73,4 @@ const ServicesCreate: FC<ListProps> = (props) => {
     );
 };
 
-export default ServicesCreate;
+export default SecretsCreate;

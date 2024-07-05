@@ -15,7 +15,7 @@ import {
 } from 'react-admin';
 import moment from 'moment';
 
-const ServicesList: FC<ListProps> = (props) => {
+const ServiceList: FC<ListProps> = (props) => {
   return (
     <List
       sort={{ field: 'createdAt', order: 'DESC' }}
@@ -36,4 +36,4 @@ const ServicesList: FC<ListProps> = (props) => {
   );
 };
 
-export default ServicesList;
+export default ServiceList;

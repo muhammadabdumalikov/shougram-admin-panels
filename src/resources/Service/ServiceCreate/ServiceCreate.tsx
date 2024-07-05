@@ -1,38 +1,45 @@
 import { FC, useEffect, useState } from 'react';
+import Grid from '@mui/material/Grid';
+import { Box } from '@mui/material';
 import {
     ListProps,
     Create,
     SimpleForm,
     TextInput,
     required,
-    SelectInput,
-    useNotify,
-    useRedirect,
-    DateInput,
+    PasswordInput,
     AutocompleteInput,
     useDataProvider,
+    NumberInput,
+    SelectInput,
+    useCreateContext,
+    useCreateController,
+    useInput,
+    FormDataConsumer,
+    useStore
 } from 'react-admin';
+import { crudProvider } from "providers"
 import { Typography } from '@mui/material';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import { FieldValues } from 'react-hook-form';
-import { type } from '../constants/promocode';
+import { currency } from 'resources/Artists/constants/artists';
+import { FieldValues, useController, useForm, useFormContext, } from 'react-hook-form';
+import { type } from '../constants/service';
+import { log } from 'console';
 
-
-const PromocodeCreate: FC<ListProps> = (props) => {
+const ServiceCreate: FC<ListProps> = (props) => {
     const dataProvider = useDataProvider();
     const [data, setData] = useState<any>()
+    const context = useFormContext()
+
 
     const transform = (data: FieldValues) => ({
-        count: +data?.count,
-        phoneNumber: data?.phoneNumber,
         artist_client_id: data?.artist_client_id,
-        type: data?.type,
-        value: +data?.value,
-        from_date: data?.from_date,
-        to_date: data?.to_date,
-        prefix: data?.prefix,
+        amount: +data?.amount,
+        currency: data?.currency,
+        limitDays: +data?.limitDays,
+        type: +data?.type,
     });
+
+    console.log(context)
 
     useEffect(() => {
         dataProvider.getList("artists", {
@@ -42,15 +49,15 @@ const PromocodeCreate: FC<ListProps> = (props) => {
         }).then(({ data }: any) => {
             setData(data);
         })
+        // setValue("limitDays", 12)
+        // reset({ limitDays: 12 })
     }, [])
-
     return (
         <Create
-            title="Create a promocode"
+            title="Create Service"
             transform={transform}
-            redirect={"show"}
         >
-            <SimpleForm sx={{ maxWidth: { lg: '500' } }}>
+            <SimpleForm>
                 <Box sx={{ flexGrow: 1 }}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
@@ -65,7 +72,7 @@ const PromocodeCreate: FC<ListProps> = (props) => {
                                     dataProvider?.getList("artists", {
                                         pagination: { page: 1, perPage: 10 },
                                         sort: { field: "id", order: "ASC" },
-                                        filter: data ? { [`ap.name`]: data, type: "ARTIST" } : {},
+                                        filter: { [`ap.name`]: data, type: "ARTIST" },
                                     }).then(({ data }: any) => {
                                         setData(data);
                                     })
@@ -76,10 +83,17 @@ const PromocodeCreate: FC<ListProps> = (props) => {
                             />
                         </Grid>
                         <Grid item xs={4}>
-                            <TextInput
-                                source="count"
-                                type="number"
-                                label="Count"
+                            <NumberInput
+                                source="amount"
+                                label="Amount"
+                                validate={required()}
+                                style={{ width: "100%" }}
+                            />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <SelectInput
+                                source="currency"
+                                choices={currency}
                                 validate={required()}
                                 style={{ width: "100%" }}
                             />
@@ -87,51 +101,38 @@ const PromocodeCreate: FC<ListProps> = (props) => {
                         <Grid item xs={4}>
                             <SelectInput
                                 source="type"
-                                validate={required()}
                                 choices={type}
+                                validate={required()}
                                 style={{ width: "100%" }}
+                            // onChange={() => {
+                            //     setValue("limitDays", 12)
+                            // }}
                             />
                         </Grid>
                         <Grid item xs={4}>
-                            <TextInput
-                                source="value"
-                                type="number"
-                                label="Value"
-                                validate={required()}
-                                style={{ width: "100%" }}
-                            />
+                            <FormDataConsumer>
+                                {({ formData }) => (
+                                    <NumberInput
+                                        source="limitDays"
+                                        label="Limit Days"
+                                        // value={formData?.type === 2 ? 1 : ""}
+                                        // max={(+formData?.type === 1 || +formData?.type === 3) ? 7 : 1}
+                                        // min={(+formData?.type === 1 || +formData?.type === 3) ? 2 : 1}
+                                        validate={required()}
+                                        style={{ width: "100%" }}
+                                        helperText={formData?.type ? `You should write ${(+formData?.type === 1 || +formData?.type === 3) ? "min: 2, max: 7" : console.log(formData)}` : ""}
+                                    />)}
+                            </FormDataConsumer>
+                            {/* <Typography variant="h6">
+                                Overall
+                            </Typography> */}
                         </Grid>
-                        <Grid item xs={4}>
-                            <DateInput
-                                source="from_date"
-                                label="Value"
-                                validate={required()}
-                                style={{ width: "100%" }}
-                            />
-                        </Grid>
-                        <Grid item xs={4}>
-                            <DateInput
-                                source="to_date"
-                                label="Value"
-                                validate={required()}
-                                style={{ width: "100%" }}
-                            />
-                        </Grid>
-                        <Grid item xs={4}>
-                            <TextInput
-                                source="prefix"
-                                label="Prefix"
-                                inputProps={{ maxLength: 6 }}
-                                validate={required()}
-                                style={{ width: "100%" }}
-                            />
-                        </Grid>
-
                     </Grid>
                 </Box>
+
             </SimpleForm>
-        </Create>
+        </Create >
     );
 };
 
-export default PromocodeCreate;
+export default ServiceCreate;

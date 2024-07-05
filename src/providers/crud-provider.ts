@@ -113,13 +113,13 @@ export default (
       encodeFilter(filter),
       encodeSort(params.sort),
     );
-    const url = resource === "promocode" ? `${apiUrl}/${Resources.PROMOCODELIST}` : resource === "service" ? `${apiUrl}/${Resources.SERVICESLIST}` : `${apiUrl}/${resource}?${query}`;
+    const url = resource === "promocode" ? `${apiUrl}/${Resources.PROMOCODELIST}` : resource === "secrets" ? `${apiUrl}/${Resources.SECRETSLIST}` : `${apiUrl}/${resource}?${query}`;
     const returnData =
-      (resource === "promocode" || resource === "service")
+      (resource === "promocode" || resource === "secrets")
         ?
         // @ts-ignore
         httpClient(url, { method: "POST", body: JSON.stringify({ page, perPage }) }).then(({ json }) => ({
-          data: json.items?.map((item: any) => { return { ...item, id: resource === "service" ? item?.id : item?.code } }),
+          data: json.items?.map((item: any) => { return { ...item, id: resource === "secrets" ? item?.id : item?.code } }),
           total: json.meta.total
         }
         ))
@@ -238,13 +238,19 @@ export default (
       resource = `${Resources.UPLOADIMAGE}/${params?.data?.clientId}`;
     } if (resource === 'promocode') {
       resource = Resources.PROMOCODECREATE
-    } if (resource === "service") {
-      resource = Resources.SERVICESCREATE
+    } if (resource === "secrets") {
+      resource = Resources.SECRETSCREATE
     }
+    // if (resource === "service") {
+    //   resource = Resources.SERVICESCREATE
+    // }
 
-    return httpClient(`${apiUrl}/${resource}`, {
-      method: 'POST',
-      body: JSON.stringify(params.data),
+    console.log("crud", params?.data?.file)
+
+    return httpClient(`${resource === "uploadFullImage" ? params?.data?.url : `${apiUrl}/${resource}`}`, {
+      method: resource === "uploadFullImage" ? "PUT" : "POST",
+      body: JSON.stringify(resource === "uploadFullImage" ? { image: params?.data?.file } : params.data),
+      // body: JSON.stringify(params.data),
     }).then(({ json }) => ({
       data: { ...json, ...params.data, id: json.clientId, },
     }));
@@ -264,9 +270,9 @@ export default (
     //   resource = Resources.PROMOCODEDELETE
     //   body = { id: params?.id }
     // }
-    const returnData = (resource === "promocode" || resource === "service")
+    const returnData = (resource === "promocode" || resource === "secrets")
       ?
-      httpClient(`${apiUrl}/${resource === "service" ? Resources.PROMOCODEDELETE : Resources.PROMOCODEDELETE}/${params?.id}`, {
+      httpClient(`${apiUrl}/${resource === "secrets" ? Resources.PROMOCODEDELETE : Resources.PROMOCODEDELETE}/${params?.id}`, {
         method: 'DELETE'
       }).then(({ json }) => ({ data: { ...json, id: params.id } }))
       :
