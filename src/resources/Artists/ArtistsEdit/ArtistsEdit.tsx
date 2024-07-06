@@ -1,22 +1,22 @@
 import { FC, useEffect, useState } from 'react';
 import {
-    ListProps,
-    Edit,
-    SimpleForm,
-    TextInput,
-    required,
-    BooleanInput,
-    PasswordInput,
-    AutocompleteArrayInput,
-    SelectInput,
-    useEditContext,
-    useEditController,
-    ImageInput,
-    ImageField,
-    Toolbar,
-    SaveButton,
-    DeleteWithConfirmButton,
-    useCreate
+  ListProps,
+  Edit,
+  SimpleForm,
+  TextInput,
+  required,
+  BooleanInput,
+  PasswordInput,
+  AutocompleteArrayInput,
+  SelectInput,
+  useEditContext,
+  useEditController,
+  ImageInput,
+  ImageField,
+  Toolbar,
+  SaveButton,
+  DeleteWithConfirmButton,
+  useCreate,
 } from 'react-admin';
 import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -25,159 +25,159 @@ import { FieldValues, useFormContext } from 'react-hook-form';
 import { activityScopes } from '../constants/artists';
 import axios from 'axios';
 
-
-
 const ArtistsCreate: FC<ListProps> = (props) => {
-    const { record } = useEditController();
-    const [createFullKey, jsonFullKey] = useCreate();
-    const [createCroppedKey, jsonCroppedKey] = useCreate();
-    const [fullImageFile, setFullImageFile] = useState()
-    const [binaryData, setBinaryData] = useState<any>(null);
-    const [file, setFile] = useState<any>(null);
+  const { record } = useEditController();
+  const [createFullKey, jsonFullKey] = useCreate();
+  const [createCroppedKey, jsonCroppedKey] = useCreate();
+  const [fullImageFile, setFullImageFile] = useState();
+  const [binaryData, setBinaryData] = useState<any>(null);
+  const [file, setFile] = useState<any>(null);
 
+  const transform = (data: FieldValues) => ({
+    artistClientId: data?.artistClientId,
+    name: data?.name,
+    phoneNumber: data?.phoneNumber,
+    isHiddenEmail: data?.isHiddenEmail,
+    description: data?.description,
+    activityScopes: data?.activityScopes,
+    socialNetworksLinks: {
+      instagram: data?.instagram,
+      facebook: data?.facebook,
+      telegram: data?.telegram,
+      tiktok: data?.tiktok,
+      youtube: data?.youtube,
+    },
+    avatarFullKey: jsonFullKey?.data?.presignedUrl,
+    avatarCroppedKey: jsonCroppedKey?.data?.presignedUrl,
+  });
+  console.log(jsonFullKey?.data);
+  const initialValues: any = {
+    name: record?.artistProfile?.name,
+    phoneNumber: record?.phoneNumber,
+    description: record?.artistProfile?.description,
+    isHiddenEmail: record?.artistProfile?.isHiddenEmail,
+    // activi: record?.artistProfile?.isHiddenEmail,
+    instagram: record?.artistProfile?.socialNetworksLinks?.instagram,
+    facebook: record?.artistProfile?.socialNetworksLinks?.facebook,
+    tiktok: record?.artistProfile?.socialNetworksLinks?.tiktok,
+    telegram: record?.artistProfile?.socialNetworksLinks?.telegram,
+    youtube: record?.artistProfile?.socialNetworksLinks?.youtube,
+    artistClientId: record?.artistProfile?.clientId,
+    activityScopes: record?.artistProfile?.activityScopes?.map((item: any) => {
+      return item?.title;
+    }),
+  };
+  const CustomToolbar = () => (
+    <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+      <SaveButton />
+      <DeleteWithConfirmButton
+        confirmContent="You will not be able to recover this record. Are you sure?"
+        confirmColor="warning"
+      />
+    </Toolbar>
+  );
 
-    const transform = (data: FieldValues) => ({
-        artistClientId: data?.artistClientId,
-        name: data?.name,
-        phoneNumber: data?.phoneNumber,
-        isHiddenEmail: data?.isHiddenEmail,
-        description: data?.description,
-        activityScopes: data?.activityScopes,
-        socialNetworksLinks: {
-            instagram: data?.instagram,
-            facebook: data?.facebook,
-            telegram: data?.telegram,
-            tiktok: data?.tiktok,
-            youtube: data?.youtube,
-        },
-        avatarFullKey: jsonFullKey?.data?.presignedUrl,
-        avatarCroppedKey: jsonCroppedKey?.data?.presignedUrl
+  const handleFileChange = (event: any) => {
+    setFile(event.target.files[0]);
+  };
 
-    });
-    console.log(jsonFullKey?.data)
-    const initialValues: any = {
-        name: record?.artistProfile?.name,
-        phoneNumber: record?.phoneNumber,
-        description: record?.artistProfile?.description,
-        isHiddenEmail: record?.artistProfile?.isHiddenEmail,
-        // activi: record?.artistProfile?.isHiddenEmail,
-        instagram: record?.artistProfile?.socialNetworksLinks?.instagram,
-        facebook: record?.artistProfile?.socialNetworksLinks?.facebook,
-        tiktok: record?.artistProfile?.socialNetworksLinks?.tiktok,
-        telegram: record?.artistProfile?.socialNetworksLinks?.telegram,
-        youtube: record?.artistProfile?.socialNetworksLinks?.youtube,
-        artistClientId: record?.artistProfile?.clientId,
-        activityScopes: record?.artistProfile?.activityScopes?.map((item: any) => {
-            return item?.title
-        })
-    };
-    const CustomToolbar = () => (
-        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <SaveButton />
-            <DeleteWithConfirmButton
-                confirmContent="You will not be able to recover this record. Are you sure?"
-                confirmColor="warning"
-            />
-        </Toolbar>
-    );
+  useEffect(() => {
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('fileName', 'avatar');
+      formData.append('fileExtension', 'jpeg');
+      formData.append('bucketFolder', 'client_avatars');
+      formData.append('clientId', 'dc7a893b-9131-40e4-8e0f-bf680be9f4cc');
+      const data = Object.fromEntries(formData);
+      console.log('formData', data);
 
+      try {
+        // createFullKey('uploadImage', {
+        //   data: formData,
+        // });
+        axios
+          .post(
+            'https://staging.api.shougram.uz/v1/admin-panel/artist-profiles/bucket/image/upload-image',
+            formData,
+            {
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MjAyOTYwMTYsInVzZXJUeXBlIjoiYWRtaW4iLCJleHAiOjE3MjAyOTY2MTYsImF1ZCI6ImFkbWluIiwic3ViIjoiNzIzNzZiYWItOGQzNS00NzI5LWExN2EtNjliYzIzNjFlYjUwIn0.YBd9kpNEazZUPykfMHANeBYIkXQqgWbLyY03d8TEKzg`,
+              },
+            },
+          )
+          .then((data) => console.log(data));
+      } catch (error) {
+        console.error('Error uploading file:', error);
+      }
+    }
+  }, [file]);
 
-    const handleFileChange = (event: any) => {
-        setFile(event.target.files[0]);
-    };
-
-    useEffect(() => {
-        if (file) {
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append('fileName', "avatar");
-            formData.append('fileExtension', "jpeg");
-            formData.append('bucketFolder', "client_avatars");
-            formData.append('clientId', "dc7a893b-9131-40e4-8e0f-bf680be9f4cc");
-            const data = Object.fromEntries(formData)
-            console.log("formData", data)
-
-            try {
-                createFullKey("uploadImage",
-                    {
-                        data: formData
-                    }
-                )
-                // axios.post("https://staging.api.shougram.uz/v1/admin-panel/artist-profiles/bucket/image/upload-image", formData)
-            } catch (error) {
-                console.error('Error uploading file:', error);
-            }
-        }
-    }, [file])
-
-
-
-
-    return (
-        <Edit
-            title={`Edit "${record?.artistProfile?.name}" information`}
-            transform={transform}
-            redirect={"show"}
-            mutationMode={"pessimistic"}
-        >
-            <SimpleForm
-                sx={{ maxWidth: { lg: '500' } }}
-                defaultValues={initialValues}
-                toolbar={<CustomToolbar />}>
-                <Box sx={{ flexGrow: 1 }}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <Typography variant="h6" gutterBottom>
-                                Overall
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <TextInput
-                                source="name"
-                                label="Name"
-                                validate={required()}
-                                style={{ width: "100%" }}
-                            />
-                        </Grid>
-                        <Grid item xs={4}>
-                            <TextInput
-                                source="phoneNumber"
-                                label="Phone number"
-                                validate={required()}
-                                style={{ width: "100%" }}
-                            />
-                        </Grid>
-                        {/* <Grid item xs={4}>
+  return (
+    <Edit
+      title={`Edit "${record?.artistProfile?.name}" information`}
+      transform={transform}
+      redirect={'show'}
+      mutationMode={'pessimistic'}
+    >
+      <SimpleForm
+        sx={{ maxWidth: { lg: '500' } }}
+        defaultValues={initialValues}
+        toolbar={<CustomToolbar />}
+      >
+        <Box sx={{ flexGrow: 1 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Typography variant="h6" gutterBottom>
+                Overall
+              </Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <TextInput
+                source="name"
+                label="Name"
+                validate={required()}
+                style={{ width: '100%' }}
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <TextInput
+                source="phoneNumber"
+                label="Phone number"
+                validate={required()}
+                style={{ width: '100%' }}
+              />
+            </Grid>
+            {/* <Grid item xs={4}>
                             <PasswordInput disabled source="password" label="Password" validate={required()} style={{ width: "100%" }} />
                         </Grid>
                         <Grid item xs={4}>
                             <TextInput source="email" label="Email" validate={required()} style={{ width: "100%" }} />
                         </Grid> */}
-                        <Grid item xs={4}>
-                            <BooleanInput
-                                source="isHiddenEmail"
-                                label="Is hidden email"
-                            />
-                        </Grid>
-                        <Grid item xs={4}>
-                            <TextInput
-                                source="description"
-                                label="Description"
-                                validate={required()}
-                                style={{ width: "100%" }}
-                            />
-                        </Grid>
-                        <Grid item xs={4}>
-                            <AutocompleteArrayInput
-                                source="activityScopes"
-                                validate={required()}
-                                choices={activityScopes}
-                                style={{ width: "100%" }}
-                            />
-                        </Grid>
-                        <Grid item xs={4}>
-                            <input type="file" onChange={handleFileChange} />
-                            {/* <input type="file" onChange={(e: any) => {
+            <Grid item xs={4}>
+              <BooleanInput source="isHiddenEmail" label="Is hidden email" />
+            </Grid>
+            <Grid item xs={4}>
+              <TextInput
+                source="description"
+                label="Description"
+                validate={required()}
+                style={{ width: '100%' }}
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <AutocompleteArrayInput
+                source="activityScopes"
+                validate={required()}
+                choices={activityScopes}
+                style={{ width: '100%' }}
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <input type="file" onChange={handleFileChange} />
+              {/* <input type="file" onChange={(e: any) => {
                                 // const formdata = new FormData();
                                 // formdata.append("fileName", "avatar");
                                 // formdata.append("file", e?.target?.files?.[0]);
@@ -217,7 +217,7 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                                 // })
                                 // createFullKey("uploadImage", { data: { ...formdata } })
                             }} /> */}
-                            {/* <ImageInput source="avatarFullKey" onChange={(file: any) => {
+              {/* <ImageInput source="avatarFullKey" onChange={(file: any) => {
                                 const formData = new FormData()
                                 formData.append("file", file)
                                 console.log(file)
@@ -292,59 +292,69 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                             }} >
                                 <ImageField source="src" title="title" />
                             </ImageInput> */}
-                        </Grid>
-                        <Grid item xs={4}>
-                            <ImageInput source="avatarCroppedKey" onChange={(file: any) => {
-                                createCroppedKey("uploadImage", { data: { fileName: "avatar", fileExtension: file?.type?.split("/")[1], bucketFolder: "client_avatars", clientId: record?.artistProfile?.clientId } })
-                            }} >
-                                <ImageField source="src" title="title" />
-                            </ImageInput>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="h6" gutterBottom>
-                                Social networks links
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <TextInput
-                                source="instagram"
-                                label="Instagram"
-                                style={{ width: "100%" }}
-                            />
-                        </Grid>
-                        <Grid item xs={4}>
-                            <TextInput
-                                source="facebook"
-                                label="Facebook"
-                                style={{ width: "100%" }}
-                            />
-                        </Grid>
-                        <Grid item xs={4}>
-                            <TextInput
-                                source="telegram"
-                                label="Telegram"
-                                style={{ width: "100%" }}
-                            />
-                        </Grid>
-                        <Grid item xs={4}>
-                            <TextInput
-                                source="tiktok"
-                                label="Tiktok"
-                                style={{ width: "100%" }}
-                            />
-                        </Grid>
-                        <Grid item xs={4}>
-                            <TextInput
-                                source="youtube"
-                                label="Youtube"
-                                style={{ width: "100%" }}
-                            />
-                        </Grid>
-                    </Grid>
-                </Box>
-            </SimpleForm>
-        </Edit >
-    );
+            </Grid>
+            <Grid item xs={4}>
+              <ImageInput
+                source="avatarCroppedKey"
+                onChange={(file: any) => {
+                  createCroppedKey('uploadImage', {
+                    data: {
+                      fileName: 'avatar',
+                      fileExtension: file?.type?.split('/')[1],
+                      bucketFolder: 'client_avatars',
+                      clientId: record?.artistProfile?.clientId,
+                    },
+                  });
+                }}
+              >
+                <ImageField source="src" title="title" />
+              </ImageInput>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="h6" gutterBottom>
+                Social networks links
+              </Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <TextInput
+                source="instagram"
+                label="Instagram"
+                style={{ width: '100%' }}
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <TextInput
+                source="facebook"
+                label="Facebook"
+                style={{ width: '100%' }}
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <TextInput
+                source="telegram"
+                label="Telegram"
+                style={{ width: '100%' }}
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <TextInput
+                source="tiktok"
+                label="Tiktok"
+                style={{ width: '100%' }}
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <TextInput
+                source="youtube"
+                label="Youtube"
+                style={{ width: '100%' }}
+              />
+            </Grid>
+          </Grid>
+        </Box>
+      </SimpleForm>
+    </Edit>
+  );
 };
 
 export default ArtistsCreate;
