@@ -235,7 +235,7 @@ export default (
     if (resource === 'artists') {
       resource = Resources.ARTISTSCREATE;
     } if (resource === 'uploadImage') {
-      resource = `${Resources.UPLOADIMAGE}/${params?.data?.clientId}`;
+      resource = `${Resources.UPLOADIMAGE}`;
     } if (resource === 'promocode') {
       resource = Resources.PROMOCODECREATE
     } if (resource === "secrets") {

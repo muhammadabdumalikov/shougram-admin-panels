@@ -23,8 +23,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { FieldValues, useFormContext } from 'react-hook-form';
 import { activityScopes } from '../constants/artists';
-import axios from "axios";
-import * as UpChunk from '@mux/upchunk';
+import axios from 'axios';
 
 
 
@@ -32,8 +31,9 @@ const ArtistsCreate: FC<ListProps> = (props) => {
     const { record } = useEditController();
     const [createFullKey, jsonFullKey] = useCreate();
     const [createCroppedKey, jsonCroppedKey] = useCreate();
-    const [uploadFullImage, jsonFullImage] = useCreate();
     const [fullImageFile, setFullImageFile] = useState()
+    const [binaryData, setBinaryData] = useState<any>(null);
+    const [file, setFile] = useState<any>(null);
 
 
     const transform = (data: FieldValues) => ({
@@ -81,53 +81,37 @@ const ArtistsCreate: FC<ListProps> = (props) => {
         </Toolbar>
     );
 
+
+    const handleFileChange = (event: any) => {
+        setFile(event.target.files[0]);
+    };
+
     useEffect(() => {
-        if (jsonFullKey?.data) {
-            console.log(fullImageFile)
-            // const upload = UpChunk.createUpload({
-            //     // getUploadUrl is a function that resolves with the upload URL generated
-            //     // on the server-side
-            //     endpoint: jsonFullKey?.data?.presignedUrl,
-            //     // picker here is a file picker HTML element
-            //     file: fullImageFile,
-            //     chunkSize: 5120, // Uploads the file in ~5mb chunks
-            // });
+        if (file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('fileName', "avatar");
+            formData.append('fileExtension', "jpeg");
+            formData.append('bucketFolder', "client_avatars");
+            formData.append('clientId', "dc7a893b-9131-40e4-8e0f-bf680be9f4cc");
+            const data = Object.fromEntries(formData)
+            console.log("formData", data)
 
-            // // subscribe to events
-            // upload.on('error', err => {
-            //     console.error('💥 🙀', err.detail);
-            // });
-
-            // upload.on('progress', progress => {
-            //     console.log('Uploaded', progress.detail, 'percent of this file.');
-            // });
-
-            // // subscribe to events
-            // upload.on('success', err => {
-            //     console.log("Wrap it up, we're done here. 👋");
-            // });
-            // @ts-ignore
-            // const buffer = fullImageFile.arrayBuffer()
-            // const bytes = new Uint8Array(buffer)
-            axios.put(jsonFullKey?.data?.presignedUrl, fullImageFile, {
-                headers: {
-                    "Content-Type": "application/json"
-                },
-            }).then(function (res: any) {
-                console.log(res.data);
-            }).catch(function (res: any) {
-                if (res instanceof Error) {
-                    console.log(res.message);
-                } else {
-                    console.log(res.data);
-                }
-            });
-
-            // uploadFullImage("uploadFullImage", { data: { url: jsonFullKey?.data?.presignedUrl, file: fullImageFile, fileKey: jsonFullKey?.data?.fileKey } })
+            try {
+                createFullKey("uploadImage",
+                    {
+                        data: formData
+                    }
+                )
+                // axios.post("https://staging.api.shougram.uz/v1/admin-panel/artist-profiles/bucket/image/upload-image", formData)
+            } catch (error) {
+                console.error('Error uploading file:', error);
+            }
         }
-    }, [jsonFullKey?.data])
+    }, [file])
 
-    console.log("jsonFullImage", jsonFullImage)
+
+
 
     return (
         <Edit
@@ -192,12 +176,122 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                             />
                         </Grid>
                         <Grid item xs={4}>
-                            <ImageInput source="avatarFullKey" onChange={(file: any) => {
-                                setFullImageFile(file)
-                                createFullKey("uploadImage", { data: { fileName: "avatar", fileExtension: file?.type?.split("/")[1], bucketFolder: "client_avatars", clientId: record?.artistProfile?.clientId } })
+                            <input type="file" onChange={handleFileChange} />
+                            {/* <input type="file" onChange={(e: any) => {
+                                // const formdata = new FormData();
+                                // formdata.append("fileName", "avatar");
+                                // formdata.append("file", e?.target?.files?.[0]);
+                                // formdata.append("fileExtension", "jpeg");
+                                // formdata.append("bucketFolder", "client_avatars");
+                                // formdata.append("clientId", "dc7a893b-9131-40e4-8e0f-bf680be9f4cc");
+                                // let fileData;
+                                // for (const [key, value] of formdata.entries()) {
+                                //     // @ts-ignore
+                                //     fileData = value?.name
+                                // }
+                                const formData = new FormData();
+                                const blob = new Blob([e?.target?.files?.[0]], { type: 'application/octet-stream' });
+                                // formData.append('swimArea', new Blob([JSON.stringify(swimArea)], { type: "application/json" }));
+                                formData.append("file", blob);
+                                console.log(blob)
+                                console.log(formData)
+                                createFullKey("uploadImage",
+                                    {
+                                        data:
+                                        {
+                                            fileName: "avatar",
+                                            fileExtension: "jpeg",
+                                            bucketFolder: "client_avatars",
+                                            clientId: record?.artistProfile?.clientId,
+                                            file: new Blob([e?.target?.files?.[0]], { type: 'application/octet-stream' })
+                                        }
+                                    }
+                                )
+                                // // axios({
+                                //     method: "POST",
+                                //     body: formdata,
+                                //     headers: {
+                                //         "Content-Type": "application/octet-stream"
+                                //     },
+                                //     url: 
+                                // })
+                                // createFullKey("uploadImage", { data: { ...formdata } })
+                            }} /> */}
+                            {/* <ImageInput source="avatarFullKey" onChange={(file: any) => {
+                                const formData = new FormData()
+                                formData.append("file", file)
+                                console.log(file)
+                                console.log({ ...formData })
+                                const functionX = async () => {
+                                    function readFileDataAsBase64() {
+                                        return new Promise((resolve, reject) => {
+                                            const reader = new FileReader();
+
+                                            reader.onload = (event: any) => {
+                                                resolve(event.target.result);
+                                            };
+
+                                            reader.onerror = (err) => {
+                                                reject(err);
+                                            };
+                                            // @ts-ignore
+                                            reader.readAsText(file);
+                                        });
+                                    }
+                                    const binaryFile = await readFileDataAsBase64()
+                                    return binaryFile
+                                }
+                                functionX().then((data: any) => {
+                                    console.log(data)
+                                    // createFullKey("uploadImage",
+                                    //     {
+                                    //         data:
+                                    //         {
+                                    //             fileName: "avatar",
+                                    //             fileExtension: file?.type?.split("/")[1],
+                                    //             bucketFolder: "client_avatars",
+                                    //             clientId: record?.artistProfile?.clientId,
+                                    //             file: data
+                                    //         }
+                                    //     }
+                                    // )
+                                })
+
+                                const arrayBufferToBinaryString = (buffer: any) => {
+                                    let binary = '';
+                                    const bytes = new Uint8Array(buffer);
+                                    const len = bytes.byteLength;
+                                    for (let i = 0; i < len; i++) {
+                                        binary += String.fromCharCode(bytes[i]);
+                                    }
+                                    return binary;
+                                };
+                                const reader = new FileReader();
+                                reader.onloadend = () => {
+                                    const arrayBuffer = reader.result;
+                                    // @ts-ignore
+                                    const binaryString = arrayBufferToBinaryString(arrayBuffer);
+                                    // @ts-ignore
+
+                                    setBinaryData(binaryString);
+                                };
+                                reader.readAsArrayBuffer(file);
+                                createFullKey("uploadImage",
+                                    {
+                                        data:
+                                        {
+                                            fileName: "avatar",
+                                            fileExtension: file?.type?.split("/")[1],
+                                            bucketFolder: "client_avatars",
+                                            clientId: record?.artistProfile?.clientId,
+                                            file: binaryData
+                                        }
+                                    }
+                                )
+                                console.log(binaryData)
                             }} >
                                 <ImageField source="src" title="title" />
-                            </ImageInput>
+                            </ImageInput> */}
                         </Grid>
                         <Grid item xs={4}>
                             <ImageInput source="avatarCroppedKey" onChange={(file: any) => {

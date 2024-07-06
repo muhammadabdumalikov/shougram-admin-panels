@@ -21,6 +21,8 @@
     "@nestjsx/crud-request": "^4.1.0",
     "@types/axios": "^0.14.0",
     "axios": "^1.7.2",
+    "buffer": "^6.0.3",
+    "fs": "^0.0.1-security",
     "jwt-decode": "^3.1.2",
     "lodash.omitby": "^4.6.0",
     "moment": "^2.29.4",

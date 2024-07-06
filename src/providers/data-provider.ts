@@ -5,7 +5,7 @@ import crudProvider from './crud-provider';
 
 const httpClient = (url: string, options: any = {}) => {
   if (!options.headers) {
-    options.headers = new Headers({ Accept: 'application/json' });
+    options.headers = new Headers({ Accept: 'application/json', ["Content-type"]: "multipart/form-data" });
   }
   const token = StorageService.getItem(StorageKeys.ACCESS_TOKEN);
   options.headers.set('Authorization', `Bearer ${token}`);
