@@ -27,6 +27,7 @@ import axios from 'axios';
 import { Resources } from 'types';
 import { StorageKeys, StorageService } from 'services';
 import { AppConfig } from 'config';
+import { useNotify } from 'react-admin';
 
 const ArtistsCreate: FC<ListProps> = (props) => {
     const { record } = useEditController();
@@ -34,6 +35,7 @@ const ArtistsCreate: FC<ListProps> = (props) => {
     const [avatarCroppedKey, setAvatarCroppedKey] = useState<any>(null);
 
     const token = StorageService.getItem(StorageKeys.ACCESS_TOKEN)
+    const notify = useNotify();
 
     const transform = (data: FieldValues) => ({
         artistClientId: data?.artistClientId,
@@ -102,7 +104,8 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                             },
                         },
                     )
-                    .then((data: any) => setAvatarFullKey(data?.data?.key));
+                    .then((data: any) => setAvatarFullKey(data?.data?.key))
+                    .catch((error: any) => { notify(error?.body?.message, { type: 'error' }); })
             } catch (error) {
                 console.error('Error uploading file:', error);
             }
@@ -130,7 +133,8 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                             },
                         },
                     )
-                    .then((data: any) => setAvatarCroppedKey(data?.data?.key));
+                    .then((data: any) => setAvatarCroppedKey(data?.data?.key))
+                    .catch((error: any) => { notify(error?.body?.message, { type: 'error' }); })
             } catch (error) {
                 console.error('Error uploading file:', error);
             }
