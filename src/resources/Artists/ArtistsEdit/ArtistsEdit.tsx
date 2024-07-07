@@ -105,7 +105,9 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                         },
                     )
                     .then((data: any) => setAvatarFullKey(data?.data?.key))
-                    .catch((error: any) => { notify(error?.body?.message, { type: 'error' }); })
+                    .catch((error: any) => {
+                        notify(error?.message, { type: 'error' });
+                    })
             } catch (error) {
                 console.error('Error uploading file:', error);
             }
@@ -134,7 +136,9 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                         },
                     )
                     .then((data: any) => setAvatarCroppedKey(data?.data?.key))
-                    .catch((error: any) => { notify(error?.body?.message, { type: 'error' }); })
+                    .catch((error: any) => {
+                        notify(error?.message, { type: 'error' });
+                    })
             } catch (error) {
                 console.error('Error uploading file:', error);
             }
