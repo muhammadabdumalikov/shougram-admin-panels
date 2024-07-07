@@ -245,12 +245,11 @@ export default (
     //   resource = Resources.SERVICESCREATE
     // }
 
-    console.log("crud", params?.data?.file)
+    console.log("crud", params?.data)
 
     return httpClient(`${resource === "uploadFullImage" ? params?.data?.url : `${apiUrl}/${resource}`}`, {
       method: resource === "uploadFullImage" ? "PUT" : "POST",
-      body: JSON.stringify(resource === "uploadFullImage" ? { image: params?.data?.file } : params.data),
-      // body: JSON.stringify(params.data),
+      body: JSON.stringify(resource === "uploadFullImage" ? { image: params?.data?.file } : params.data?.formData),
     }).then(({ json }) => ({
       data: { ...json, ...params.data, id: json.clientId, },
     }));
