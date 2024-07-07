@@ -172,12 +172,6 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                                 style={{ width: '100%' }}
                             />
                         </Grid>
-                        {/* <Grid item xs={4}>
-                            <PasswordInput disabled source="password" label="Password" validate={required()} style={{ width: "100%" }} />
-                        </Grid>
-                        <Grid item xs={4}>
-                            <TextInput source="email" label="Email" validate={required()} style={{ width: "100%" }} />
-                        </Grid> */}
                         <Grid item xs={4}>
                             <BooleanInput source="isHiddenEmail" label="Is hidden email" />
                         </Grid>
