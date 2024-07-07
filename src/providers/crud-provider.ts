@@ -134,14 +134,16 @@ export default (
   },
 
   getOne: (resource, params) => {
-    if (resource === 'artists' || resource === 'customers') {
-      resource = Resources.CLIENTS;
-    }
-    // if (resource === 'artists') {
-    //   resource = Resources.ARTISTSCREATE;
+    // if (resource === 'artists' || resource === 'customers') {
+    //   resource = Resources.CLIENTS;
     // }
+    if (resource === 'artists') {
+      resource = Resources.ARTISTGET;
+    }
     // console.log("crud", params)
-    return httpClient(`${apiUrl}/${resource}/${params.id}`).then(
+    return httpClient(`${apiUrl}/${resource}/${params.id}`, {
+      method: "POST",
+    }).then(
       ({ json }) => ({
         data: json,
       }),
@@ -247,9 +249,9 @@ export default (
 
     console.log("crud", params?.data)
 
-    return httpClient(`${resource === "uploadFullImage" ? params?.data?.url : `${apiUrl}/${resource}`}`, {
-      method: resource === "uploadFullImage" ? "PUT" : "POST",
-      body: JSON.stringify(resource === "uploadFullImage" ? { image: params?.data?.file } : params.data?.formData),
+    return httpClient(`${apiUrl}/${resource}`, {
+      method: "POST",
+      body: JSON.stringify(params.data),
     }).then(({ json }) => ({
       data: { ...json, ...params.data, id: json.clientId, },
     }));

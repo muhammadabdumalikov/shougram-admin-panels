@@ -17,12 +17,14 @@ import {
     SaveButton,
     DeleteWithConfirmButton,
     useCreate,
+    FormDataConsumer,
+    NumberInput,
 } from 'react-admin';
 import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { FieldValues, useFormContext } from 'react-hook-form';
-import { activityScopes } from '../constants/artists';
+import { activityScopes, currency, type } from '../constants/artists';
 import axios from 'axios';
 import { Resources } from 'types';
 import { StorageKeys, StorageService } from 'services';
@@ -51,26 +53,40 @@ const ArtistsCreate: FC<ListProps> = (props) => {
             tiktok: data?.tiktok,
             youtube: data?.youtube,
         },
+        // services: [
+        //     {
+        //         amount: +data?.amount,
+        //         currency: data?.currency,
+        //         limitDays: +data?.limitDays,
+        //         type: +data?.serviceType,
+        //     }
+        // ],
         avatarFullKey: avatarFullKey || data?.avatarFullKey,
         avatarCroppedKey: avatarCroppedKey || data?.avatarCroppedKey,
+
     });
 
     const initialValues: any = {
-        name: record?.artistProfile?.name,
+        name: record?.profile?.name,
         phoneNumber: record?.phoneNumber,
-        description: record?.artistProfile?.description,
-        isHiddenEmail: record?.artistProfile?.isHiddenEmail,
-        instagram: record?.artistProfile?.socialNetworksLinks?.instagram,
-        facebook: record?.artistProfile?.socialNetworksLinks?.facebook,
-        tiktok: record?.artistProfile?.socialNetworksLinks?.tiktok,
-        telegram: record?.artistProfile?.socialNetworksLinks?.telegram,
-        youtube: record?.artistProfile?.socialNetworksLinks?.youtube,
-        artistClientId: record?.artistProfile?.clientId,
-        avatarFullKey: record?.artistProfile?.avatarFullKey,
-        avatarCroppedKey: record?.artistProfile?.avatarCroppedKey,
-        activityScopes: record?.artistProfile?.activityScopes?.map((item: any) => {
-            return item?.title;
+        description: record?.profile?.description,
+        isHiddenEmail: record?.profile?.isHiddenEmail,
+        instagram: record?.profile?.socialNetworksLinks?.instagram,
+        facebook: record?.profile?.socialNetworksLinks?.facebook,
+        tiktok: record?.profile?.socialNetworksLinks?.tiktok,
+        telegram: record?.profile?.socialNetworksLinks?.telegram,
+        youtube: record?.profile?.socialNetworksLinks?.youtube,
+        artistClientId: record?.profile?.clientId,
+        avatarFullKey: `client_avatars${record?.profile?.avatarFullUrl?.split("client_avatars")[1]}`,
+        avatarCroppedKey: `client_avatars${record?.profile?.avatarCroppedUrl?.split("client_avatars")[1]}`,
+        // amount: record?.profile?.services?.[0]?.amount,
+        // limitDays: record?.profile?.services?.[0]?.limitDays,
+        // serviceType: record?.profile?.services?.[0]?.type,
+        // currency: record?.profile?.services?.[0]?.currency,
+        activityScopes: record?.profile?.activityScopes?.map((item: any) => {
+            return item;
         }),
+
     };
 
     const CustomToolbar = () => (
@@ -90,7 +106,7 @@ const ArtistsCreate: FC<ListProps> = (props) => {
             formData.append('fileName', 'avatar');
             formData.append('fileExtension', file?.type?.split("/")[1]);
             formData.append('bucketFolder', 'client_avatars');
-            formData.append('clientId', record?.artistProfile?.clientId);
+            formData.append('clientId', record?.profile?.clientId);
             try {
                 axios
                     .post(
@@ -121,7 +137,7 @@ const ArtistsCreate: FC<ListProps> = (props) => {
             formData.append('fileName', 'avatar');
             formData.append('fileExtension', file?.type?.split("/")[1]);
             formData.append('bucketFolder', 'client_avatars');
-            formData.append('clientId', record?.artistProfile?.clientId);
+            formData.append('clientId', record?.profile?.clientId);
             try {
                 axios
                     .post(
@@ -147,7 +163,7 @@ const ArtistsCreate: FC<ListProps> = (props) => {
 
     return (
         <Edit
-            title={`Edit "${record?.artistProfile?.name}" information`}
+            title={`Edit "${record?.profile?.name}" information`}
             transform={transform}
             redirect={'show'}
             mutationMode={'pessimistic'}
@@ -209,9 +225,9 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                                 validate={required()}
                             >
                                 {
-                                    (record?.artistProfile?.avatarFullUrl && !avatarFullKey)
+                                    (record?.profile?.avatarFullUrl && !avatarFullKey)
                                         ?
-                                        <ImageField source="artistProfile.avatarFullUrl" record={record} title="title" />
+                                        <ImageField source="profile.avatarFullUrl" record={record} title="title" />
                                         :
                                         <ImageField source="src" title="title" />
                                 }
@@ -227,14 +243,58 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                                 validate={required()}
                             >
                                 {
-                                    (record?.artistProfile?.avatarCroppedUrl && !avatarCroppedKey)
+                                    (record?.profile?.avatarCroppedUrl && !avatarCroppedKey)
                                         ?
-                                        <ImageField source="artistProfile.avatarCroppedUrl" record={record} title="title" />
+                                        <ImageField source="profile.avatarCroppedUrl" record={record} title="title" />
                                         :
                                         <ImageField source="src" title="title" />
                                 }
                             </ImageInput>
                         </Grid>
+                        {/* <Grid item xs={12}>
+                            <Typography variant="h6" gutterBottom>
+                                Service
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <NumberInput
+                                source="amount"
+                                label="Amount"
+                                validate={required()}
+                                style={{ width: "100%" }}
+                            />
+                        </Grid>
+                        <Grid item xs={3}>
+                            <SelectInput
+                                source="currency"
+                                choices={currency}
+                                validate={required()}
+                                style={{ width: "100%" }}
+                            />
+                        </Grid>
+                        <Grid item xs={3}>
+                            <SelectInput
+                                source="serviceType"
+                                choices={type}
+                                validate={required()}
+                                style={{ width: "100%" }}
+                            />
+                        </Grid>
+                        <Grid item xs={3}>
+                            <FormDataConsumer>
+                                {({ formData }) => (
+                                    <NumberInput
+                                        source="limitDays"
+                                        label="Limit Days"
+                                        value={formData?.serviceType === 2 ? 1 : ""}
+                                        max={(+formData?.serviceType === 1 || +formData?.serviceType === 3) ? 7 : 1}
+                                        min={(+formData?.serviceType === 1 || +formData?.serviceType === 3) ? 2 : 1}
+                                        validate={required()}
+                                        style={{ width: "100%" }}
+                                        helperText={formData?.serviceType ? `You should write ${(+formData?.serviceType === 1 || +formData?.serviceType === 3) ? "min: 2, max: 7" : "1"}` : ""}
+                                    />)}
+                            </FormDataConsumer>
+                        </Grid> */}
                         <Grid item xs={12}>
                             <Typography variant="h6" gutterBottom>
                                 Social networks links

@@ -20,18 +20,18 @@ const ArtistsShow = () => {
       <TabbedShowLayout>
         <Tab label="Об артисте">
           <TextField source="id" />
-          <TextField source="artistProfile.name" label="Имя/Псевдоним" />
+          <TextField source="profile.name" label="Имя/Псевдоним" />
           <TextField source="phoneNumber" label="Номер телефона" />
           <EmailField source="email" label="Эл.почта" />
           <FunctionField
             label="Статус"
-            render={(record: OrderTypeOrmEntityArtistClient) =>
-              formatArtistProfileStatusName(record.artistProfile?.status)
+            render={(record: any) =>
+              formatArtistProfileStatusName(record.profile?.status)
             }
           />
           <ImageField
             label="Аватар"
-            source="artistProfile.avatarFullUrl"
+            source="profile.avatarFullUrl"
             sx={{
               '& img': {
                 width: 250,
@@ -42,12 +42,12 @@ const ArtistsShow = () => {
           />
           <FunctionField
             label="Видео визитка"
-            render={(record: OrderTypeOrmEntityArtistClient) => {
+            render={(record: any) => {
               return (
-                record.artistProfile?.videoPresentationPlaybackId && (
+                record.profile?.videoPresentationPlaybackId && (
                   <VideoPlayerField
                     playbackId={
-                      record.artistProfile?.videoPresentationPlaybackId
+                      record.profile?.videoPresentationPlaybackId
                     }
                   />
                 )
@@ -60,20 +60,20 @@ const ArtistsShow = () => {
         <Tab label="Об услугах">
           <FunctionField
             label="Стоимость"
-            render={(record: OrderTypeOrmEntityArtistClient) => {
-              return record?.artistProfile?.service?.amount
-                ? ` ${record.artistProfile.service.amount.toLocaleString(
+            render={(record: any) => {
+              return record?.profile?.services?.[0]?.amount
+                ? ` ${record.profile.services[0].amount.toLocaleString(
                   'ja-JP',
                   {
                     style: 'currency',
-                    currency: record.artistProfile.service.currency,
+                    currency: record.profile.services[0].currency,
                   },
                 )} `
                 : null;
             }}
           />
           <TextField
-            source="artistProfile.service.limitDays"
+            source="profile.services[0].limitDays"
             label="Срок выполнения заказа"
           />
         </Tab>
