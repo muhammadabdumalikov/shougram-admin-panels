@@ -44,6 +44,7 @@ const ArtistsCreate: FC<ListProps> = (props) => {
         name: data?.name,
         phoneNumber: data?.phoneNumber,
         isHiddenEmail: data?.isHiddenEmail,
+        email: data?.email,
         description: data?.description,
         activityScopes: data?.activityScopes,
         socialNetworksLinks: {
@@ -71,6 +72,7 @@ const ArtistsCreate: FC<ListProps> = (props) => {
         phoneNumber: record?.phoneNumber,
         description: record?.profile?.description,
         isHiddenEmail: record?.profile?.isHiddenEmail,
+        email: record?.profile?.email,
         instagram: record?.profile?.socialNetworksLinks?.instagram,
         facebook: record?.profile?.socialNetworksLinks?.facebook,
         tiktok: record?.profile?.socialNetworksLinks?.tiktok,
@@ -180,7 +182,7 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                                 Общий
                             </Typography>
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item xs={3}>
                             <TextInput
                                 source="name"
                                 label="имя"
@@ -188,7 +190,7 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                                 style={{ width: '100%' }}
                             />
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item xs={3}>
                             <TextInput
                                 source="phoneNumber"
                                 label="Номер телефона"
@@ -196,7 +198,16 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                                 style={{ width: '100%' }}
                             />
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item xs={3}>
+                            <TextInput
+                                type="email"
+                                source="email"
+                                label="Электронная почта"
+                                validate={required()}
+                                style={{ width: "100%" }}
+                            />
+                        </Grid>
+                        <Grid item xs={3}>
                             <BooleanInput source="isHiddenEmail" label="Скрытый адрес электронной почты" />
                         </Grid>
                         <Grid item xs={4}>
