@@ -57,29 +57,31 @@ const ArtistsCreate: FC<ListProps> = (props) => {
         }
 
     });
-    console.log("context", context)
-    useEffect(() => {
-        console.log("formContext", formContext)
-        // formContext.setValue("limitDays", 3)
-    });
+    const initialValues: any = {
+        amount: 100,
+        currency: "UZS",
+        limitDays: 3,
+        type: 1
+
+    };
     return (
         <Create
             title="Create an artist"
             transform={transform}
-            redirect={"show"}
+            redirect={"edit"}
         >
-            <SimpleForm sx={{ maxWidth: { lg: '500' } }}>
+            <SimpleForm sx={{ maxWidth: { lg: '500' } }} defaultValues={initialValues}>
                 <Box sx={{ flexGrow: 1 }}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <Typography variant="h6" gutterBottom>
-                                Overall
+                                Общий
                             </Typography>
                         </Grid>
                         <Grid item xs={4}>
                             <TextInput
                                 source="name"
-                                label="Name"
+                                label="имя"
                                 validate={required()}
                                 style={{ width: "100%" }}
                             />
@@ -87,7 +89,7 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                         <Grid item xs={4}>
                             <TextInput
                                 source="phoneNumber"
-                                label="Phone number"
+                                label="Номер телефона"
                                 validate={required()}
                                 style={{ width: "100%" }}
                             />
@@ -95,7 +97,7 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                         <Grid item xs={4}>
                             <PasswordInput
                                 source="password"
-                                label="Password"
+                                label="Пароль"
                                 inputProps={{ minLength: 6 }}
                                 validate={required()}
                                 style={{ width: "100%" }}
@@ -105,7 +107,7 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                             <TextInput
                                 type="email"
                                 source="email"
-                                label="Email"
+                                label="Электронная почта"
                                 validate={required()}
                                 style={{ width: "100%" }}
                             />
@@ -113,13 +115,13 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                         <Grid item xs={4}>
                             <BooleanInput
                                 source="isHiddenEmail"
-                                label="Is hidden email"
+                                label="Скрытый адрес электронной почты"
                             />
                         </Grid>
                         <Grid item xs={4}>
                             <TextInput
                                 source="description"
-                                label="Description"
+                                label="Описание"
                                 validate={required()}
                                 style={{ width: "100%" }}
                             />
@@ -127,6 +129,7 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                         <Grid item xs={4}>
                             <AutocompleteArrayInput
                                 source="activityScopes"
+                                label="Области деятельности"
                                 validate={required()}
                                 choices={activityScopes}
                                 style={{ width: "100%" }}
@@ -144,13 +147,13 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                         </Grid> */}
                         <Grid item xs={12}>
                             <Typography variant="h6" gutterBottom>
-                                Service
+                                Услуга
                             </Typography>
                         </Grid>
                         <Grid item xs={3}>
                             <NumberInput
                                 source="amount"
-                                label="Amount"
+                                label="Количество"
                                 validate={required()}
                                 style={{ width: "100%" }}
                             />
@@ -158,6 +161,7 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                         <Grid item xs={3}>
                             <SelectInput
                                 source="currency"
+                                label="валюта"
                                 choices={currency}
                                 validate={required()}
                                 style={{ width: "100%" }}
@@ -166,6 +170,7 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                         <Grid item xs={3}>
                             <SelectInput
                                 source="type"
+                                label="тип"
                                 choices={type}
                                 validate={required()}
                                 style={{ width: "100%" }}
@@ -180,12 +185,12 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                                 {({ formData }) => (
                                     <NumberInput
                                         source="limitDays"
-                                        label="Limit Days"
+                                        label="Ограничить дни"
                                         max={(+formData?.type === 1 || +formData?.type === 3) ? 7 : 1}
                                         min={(+formData?.type === 1 || +formData?.type === 3) ? 2 : 1}
                                         validate={required()}
                                         style={{ width: "100%" }}
-                                        helperText={formData?.type ? `You should write ${(+formData?.type === 1 || +formData?.type === 3) ? "min: 2, max: 7" : console.log("formData", formData)}` : ""}
+                                        helperText={formData?.type ? `Вы должны написать ${(+formData?.type === 1 || +formData?.type === 3) ? "мин: 2, Макс: 7" : 1}` : ""}
                                     />)}
                             </FormDataConsumer>
                             {/* <NumberInput
@@ -199,7 +204,7 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                         </Grid>
                         <Grid item xs={12}>
                             <Typography variant="h6" gutterBottom>
-                                Social networks links
+                                Ссылки на социальные сети
                             </Typography>
                         </Grid>
                         <Grid item xs={4}>

@@ -21,8 +21,8 @@ export const activityScopes = [
 ]
 
 export const type = [
-    { id: '1', name: 'ORDINARY' },
-    { id: '2', name: 'URGENTLY' },
-    { id: '3', name: 'COMMERCIAL' },
+    { id: '1', name: 'ОБЫЧНЫЙ' },
+    { id: '2', name: 'СРОЧНО' },
+    { id: '3', name: 'КОММЕРЧЕСКИЙ' },
 ]
 

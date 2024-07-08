@@ -177,13 +177,13 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <Typography variant="h6" gutterBottom>
-                                Overall
+                                Общий
                             </Typography>
                         </Grid>
                         <Grid item xs={4}>
                             <TextInput
                                 source="name"
-                                label="Name"
+                                label="имя"
                                 validate={required()}
                                 style={{ width: '100%' }}
                             />
@@ -191,18 +191,18 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                         <Grid item xs={4}>
                             <TextInput
                                 source="phoneNumber"
-                                label="Phone number"
+                                label="Номер телефона"
                                 validate={required()}
                                 style={{ width: '100%' }}
                             />
                         </Grid>
                         <Grid item xs={4}>
-                            <BooleanInput source="isHiddenEmail" label="Is hidden email" />
+                            <BooleanInput source="isHiddenEmail" label="Скрытый адрес электронной почты" />
                         </Grid>
                         <Grid item xs={4}>
                             <TextInput
                                 source="description"
-                                label="Description"
+                                label="Описание"
                                 validate={required()}
                                 style={{ width: '100%' }}
                             />
@@ -210,6 +210,7 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                         <Grid item xs={4}>
                             <AutocompleteArrayInput
                                 source="activityScopes"
+                                label="Области деятельности"
                                 validate={required()}
                                 choices={activityScopes}
                                 style={{ width: '100%' }}
@@ -219,6 +220,7 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                         <Grid item xs={6}>
                             <ImageInput
                                 source="avatarFullKey"
+                                label="полный ключ аватара"
                                 onChange={(file: any) => {
                                     uploadAvatarFullFile(file)
                                 }}
@@ -237,6 +239,7 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                         <Grid item xs={6}>
                             <ImageInput
                                 source="avatarCroppedKey"
+                                label="обрезанный ключ аватара"
                                 onChange={(file: any) => {
                                     uploadAvatarCroppedFile(file)
                                 }}
@@ -297,7 +300,7 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                         </Grid> */}
                         <Grid item xs={12}>
                             <Typography variant="h6" gutterBottom>
-                                Social networks links
+                                Ссылки на социальные сети
                             </Typography>
                         </Grid>
                         <Grid item xs={4}>

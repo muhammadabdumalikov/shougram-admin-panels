@@ -13,6 +13,7 @@ import {
 import { formatArtistProfileStatusName } from '../helpers';
 import { VideoPlayerField } from 'components';
 import { ShowActions } from './components';
+import ProfileImage from 'assets/icons/ProfileImage';
 
 const ArtistsShow = () => {
   return (
@@ -29,16 +30,18 @@ const ArtistsShow = () => {
               formatArtistProfileStatusName(record.profile?.status)
             }
           />
-          <ImageField
+          <FunctionField
             label="Аватар"
-            source="profile.avatarFullUrl"
-            sx={{
-              '& img': {
-                width: 250,
-                minHeight: 250,
-                objectFit: 'cover',
-              },
-            }}
+            // @ts-ignore
+            render={(record: any) => <>
+              {
+                record?.profile?.avatarFullUrl
+                  ?
+                  <img src={record?.profile?.avatarFullUrl} width={200} height={200} />
+                  :
+                  <ProfileImage width={200} height={200} />
+              }
+            </>}
           />
           <FunctionField
             label="Видео визитка"
