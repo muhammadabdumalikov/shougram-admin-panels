@@ -54,14 +54,14 @@ const ArtistsCreate: FC<ListProps> = (props) => {
             tiktok: data?.tiktok,
             youtube: data?.youtube,
         },
-        // services: [
-        //     {
-        //         amount: +data?.amount,
-        //         currency: data?.currency,
-        //         limitDays: +data?.limitDays,
-        //         type: +data?.serviceType,
-        //     }
-        // ],
+        services: [
+            {
+                amount: +data?.amount,
+                currency: data?.currency,
+                limitDays: +data?.limitDays,
+                type: +data?.serviceType,
+            }
+        ],
         avatarFullKey: avatarFullKey || data?.avatarFullKey,
         avatarCroppedKey: avatarCroppedKey || data?.avatarCroppedKey,
 
@@ -79,12 +79,12 @@ const ArtistsCreate: FC<ListProps> = (props) => {
         telegram: record?.profile?.socialNetworksLinks?.telegram,
         youtube: record?.profile?.socialNetworksLinks?.youtube,
         artistClientId: record?.profile?.clientId,
-        avatarFullKey: `client_avatars${record?.profile?.avatarFullUrl?.split("client_avatars")[1]}`,
-        avatarCroppedKey: `client_avatars${record?.profile?.avatarCroppedUrl?.split("client_avatars")[1]}`,
-        // amount: record?.profile?.services?.[0]?.amount,
-        // limitDays: record?.profile?.services?.[0]?.limitDays,
-        // serviceType: record?.profile?.services?.[0]?.type,
-        // currency: record?.profile?.services?.[0]?.currency,
+        avatarFullKey: record?.profile?.avatarFullUrl ? `client_avatars${record?.profile?.avatarFullUrl?.split("client_avatars")[1]}` : null,
+        avatarCroppedKey: record?.profile?.avatarCroppedUrl ? `client_avatars${record?.profile?.avatarCroppedUrl?.split("client_avatars")[1]}` : null,
+        amount: record?.profile?.services?.[0]?.amount,
+        limitDays: record?.profile?.services?.[0]?.limitDays,
+        serviceType: record?.profile?.services?.[0]?.type,
+        currency: record?.profile?.services?.[0]?.currency,
         activityScopes: record?.profile?.activityScopes?.map((item: any) => {
             return item;
         }),
@@ -265,7 +265,7 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                                 }
                             </ImageInput>
                         </Grid>
-                        {/* <Grid item xs={12}>
+                        <Grid item xs={12}>
                             <Typography variant="h6" gutterBottom>
                                 Service
                             </Typography>
@@ -300,7 +300,7 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                                     <NumberInput
                                         source="limitDays"
                                         label="Limit Days"
-                                        value={formData?.serviceType === 2 ? 1 : ""}
+                                        // value={formData?.serviceType === 2 ? 1 : ""}
                                         max={(+formData?.serviceType === 1 || +formData?.serviceType === 3) ? 7 : 1}
                                         min={(+formData?.serviceType === 1 || +formData?.serviceType === 3) ? 2 : 1}
                                         validate={required()}
@@ -308,7 +308,7 @@ const ArtistsCreate: FC<ListProps> = (props) => {
                                         helperText={formData?.serviceType ? `You should write ${(+formData?.serviceType === 1 || +formData?.serviceType === 3) ? "min: 2, max: 7" : "1"}` : ""}
                                     />)}
                             </FormDataConsumer>
-                        </Grid> */}
+                        </Grid>
                         <Grid item xs={12}>
                             <Typography variant="h6" gutterBottom>
                                 Ссылки на социальные сети
