@@ -242,6 +242,8 @@ export default (
       resource = Resources.PROMOCODECREATE
     } if (resource === "secrets") {
       resource = Resources.SECRETSCREATE
+    } if (resource === "set-service") {
+      resource = Resources.SERVICESCREATE
     }
     // if (resource === "service") {
     //   resource = Resources.SERVICESCREATE
@@ -262,10 +264,17 @@ export default (
     //   resource = Resources.CLIENTS;
     // }
     let body;
+    let method = "POST";
 
     if (resource === 'artists') {
       resource = Resources.ARTISTSDELETE;
       body = { artistProfileId: params?.previousData?.artistProfile?.id, artistClientId: params?.previousData?.artistProfile?.clientId }
+    }
+    if (resource === "del-service") {
+      resource = Resources.SERVICESDELTE
+      body = params?.previousData
+      method = "DELETE"
+
     }
     // else if (resource === 'promocode') {
     //   resource = Resources.PROMOCODEDELETE
@@ -278,9 +287,9 @@ export default (
       }).then(({ json }) => ({ data: { ...json, id: params.id } }))
       :
       httpClient(`${apiUrl}/${resource}`, {
-        method: 'POST',
+        method: method,
         body: JSON.stringify(body)
-      }).then(({ json }) => ({ data: { ...json, id: params.id } }))
+      }).then(({ json }) => ({ data: { ...json, id: params.id, params: params } }))
 
     return returnData;
   },

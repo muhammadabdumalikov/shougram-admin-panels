@@ -12,5 +12,6 @@ export enum Resources {
   PROMOCODECREATE = "v1/admin-panel/promocode",
   PROMOCODEDELETE = "v1/admin-panel/promocode",
   SERVICESCREATE = "v1/admin-panel/artist-profiles/set-service",
+  SERVICESDELTE = "v1/admin-panel/artist-profiles/delete-service",
   UPLOADIMAGE = "v1/admin-panel/artist-profiles/bucket/image/upload-image",
 }
