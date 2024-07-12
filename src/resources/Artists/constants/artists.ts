@@ -19,3 +19,10 @@ export const activityScopes = [
     { id: 'art', name: 'Art' },
     { id: 'literature', name: 'Literature' },
 ]
+
+export const type = [
+    { id: '1', name: 'ОБЫЧНЫЙ' },
+    { id: '2', name: 'СРОЧНО' },
+    { id: '3', name: 'КОММЕРЧЕСКИЙ' },
+]
+

@@ -3,6 +3,7 @@ export enum Resources {
   ARTISTSCREATE = 'v1/admin-panel/artist-profiles/create',
   ARTISTSUPDATE = 'v1/admin-panel/artist-profiles/update',
   ARTISTSDELETE = 'v1/admin-panel/artist-profiles/delete',
+  ARTISTGET = 'v1/admin-panel/artist-profiles',
   ORDERS = 'v1/admin-panel/orders',
   SECRETSLIST = 'v1/admin-panel/secrets/find',
   SECRETSCREATE = 'v1/admin-panel/secrets',

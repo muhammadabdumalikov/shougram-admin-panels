@@ -14,10 +14,12 @@ import {
   TextInput,
   ListProps,
   EditButton,
-  DeleteWithConfirmButton
+  DeleteWithConfirmButton,
+  ImageField
 } from 'react-admin';
 import { formatArtistProfileStatusName } from '../helpers';
 import { FC } from 'react';
+import ProfileImage from 'assets/icons/ProfileImage';
 
 const customersFilters = [
   <SelectInput
@@ -63,6 +65,7 @@ const customersFilters = [
 ];
 
 const ArtistsList: FC<ListProps> = (props) => {
+
   return (
     <List
       filters={customersFilters}
@@ -72,6 +75,19 @@ const ArtistsList: FC<ListProps> = (props) => {
       {...props}
     >
       <Datagrid bulkActionButtons={false} rowClick="show">
+        <FunctionField
+          label="Аватар"
+          // @ts-ignore
+          render={(record: any) => <>
+            {
+              record?.artistProfile?.avatarFullUrl
+                ?
+                <img src={record?.artistProfile?.avatarFullUrl} width={70} height={70} style={{ borderRadius: "50%" }} />
+                :
+                <ProfileImage />
+            }
+          </>}
+        />
         <TextField source="id" sortable />
         <DateField source="createdAt" sortable label="Дата регистрации" />
         <TextField
