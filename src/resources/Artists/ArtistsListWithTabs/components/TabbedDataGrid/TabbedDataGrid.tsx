@@ -18,7 +18,7 @@ const tabs = [
 const TabbedDatagrid = () => {
   const listContext = useListContext();
   const { filterValues, setFilters, displayedFilters } = listContext;
-  console.log('filterValues', filterValues);
+  // console.log('filterValues', filterValues);
 
   const handleChange = useCallback(
     (event: React.ChangeEvent<any>, value: string) => {

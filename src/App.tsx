@@ -17,7 +17,7 @@ import {
   SecretsList,
   SecretsCreate,
   ServiceList,
-  ServiceCreate
+  ServiceCreate,
 } from 'resources';
 import GroupsIcon from '@mui/icons-material/Groups';
 import FaceRetouchingNaturalIcon from '@mui/icons-material/FaceRetouchingNatural';
@@ -27,6 +27,8 @@ import QrCodeIcon from '@mui/icons-material/QrCode';
 import KeyIcon from '@mui/icons-material/Key';
 import { Resources } from 'types';
 import { PromocodeCreate, PromocodeList } from 'resources/Promocode';
+import { List } from '@mui/icons-material';
+import { CustomMenu } from 'CustomMenu';
 
 const App = () => {
   const { currentTheme } = useDirectionTheme();
@@ -41,6 +43,7 @@ const App = () => {
         loginPage={LoginPage}
         i18nProvider={i18nProvider}
         requireAuth
+        menu={CustomMenu}
       >
         <Resource
           name="artists"
@@ -66,7 +69,7 @@ const App = () => {
           options={{ label: 'Заявки' }}
         />
         <Resource
-          name={"secrets"}
+          name={'secrets'}
           icon={KeyIcon}
           list={SecretsList}
           // show={OrdersShow}
@@ -74,11 +77,18 @@ const App = () => {
           create={SecretsCreate}
         />
         <Resource
-          name={"promocode"}
+          name={'promocode'}
           icon={QrCodeIcon}
           list={PromocodeList}
           // show={OrdersShow}
           options={{ label: 'Promocode' }}
+          create={PromocodeCreate}
+        />
+        <Resource
+          name={'Signature'}
+          list={PromocodeList}
+          // show={OrdersShow}
+          options={{ label: 'Signature' }}
           create={PromocodeCreate}
         />
         {/* <Resource

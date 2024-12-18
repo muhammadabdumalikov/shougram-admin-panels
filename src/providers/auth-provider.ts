@@ -13,7 +13,7 @@ import { JWTToken } from 'types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const authProvider = (type: AuthActionType, params: any): Promise<any> => {
-  console.log(type);
+  // console.log(type);
   if (type === AUTH_LOGIN) {
     const { username, password } = params;
     return http

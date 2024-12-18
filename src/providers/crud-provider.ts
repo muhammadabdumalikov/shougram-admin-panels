@@ -209,7 +209,7 @@ export default (
     }
     // no need to send all fields, only updated fields are enough
     const data = countDiff(params.data, params.previousData);
-    console.log(data)
+    // console.log(data)
     return httpClient(`${apiUrl}/${resource}`, {
       method: 'POST',
       body: JSON.stringify(data),
