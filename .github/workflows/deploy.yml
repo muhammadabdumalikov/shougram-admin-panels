@@ -1,0 +1,70 @@
+name: CI/CD for Next.js
+
+on:
+    push:
+        branches:
+            - main # Faqat "main" branchga push qilinganda ishga tushadi
+    pull_request:
+        branches:
+            - main # Pull request yaratilganda ham ishlaydi
+
+jobs:
+    lint:
+        name: Lint and Format Code
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v3
+
+            - name: Install Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 18 # Next.js-ning mos Node versiyasini ishlating
+
+            - name: Install Dependencies
+              run: npm install
+
+            - name: Run Linter (ESLint)
+              run: npm run lint
+
+            - name: Check Formatting (Prettier)
+              run: npx prettier --check .
+
+    build-and-test:
+        name: Build and Test
+        needs: lint
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v3
+
+            - name: Install Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 18
+
+            - name: Install Dependencies
+              run: npm install
+
+            - name: Build Application
+              run: npm run build
+
+            - name: Run Tests
+              run: npm test # Agar testlar yozilgan bo'lsa
+
+    deploy:
+        name: Deploy to Vercel
+        needs: build-and-test
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v3
+
+            - name: Deploy to Vercel
+              run: npx vercel --prod
+              env:
+                  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+                  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
